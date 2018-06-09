@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Example 1: simulating an FRB &mdash; simpulse  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Simulating FRB’s: class single_pulse" href="single_pulse.html" />
+    <link rel="prev" title="simpulse: simulating pulses in radio astronomy" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> simpulse
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example 1: simulating an FRB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="single_pulse.html">Simulating FRB’s: class single_pulse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phase_models.html">Pulsar phase models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pulsar_profiles.html">Pulsar profiles, and simulating pulsars</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">simpulse</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Example 1: simulating an FRB</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/example_frb.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="example-1-simulating-an-frb">
+<h1>Example 1: simulating an FRB<a class="headerlink" href="#example-1-simulating-an-frb" title="Permalink to this headline">¶</a></h1>
+<p>The following plot shows Gaussian noise, plus a simulated FRB with signal-to-noise ratio 250, in the (frequency, time) plane:</p>
+<a class="reference internal image-reference" href="_images/example1_frb.png"><img alt="_images/example1_frb.png" src="_images/example1_frb.png" style="width: 800px; height: 600px;" /></a>
+<p>Here is the script to create it (simpulse/examples/python/01-simulating-frb.py):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#</span>
+<span class="c1"># This script plots a simulated FRB plus Gaussian noise, in the (frequency, time) plane.</span>
+<span class="c1"># To make a nice-looking plot, we normalize the pulse to signal-to-noise ratio 250.</span>
+
+<span class="kn">import</span> <span class="nn">simpulse</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="n">t0</span> <span class="o">=</span> <span class="mf">0.0</span>    <span class="c1"># starting time of simulation (seconds)</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="mf">4.0</span>    <span class="c1"># ending time of simulation (seconds)</span>
+<span class="n">nt</span> <span class="o">=</span> <span class="mi">800</span>    <span class="c1"># number of time samples (corresponds to 5 ms sampling)</span>
+<span class="n">sample_rms</span> <span class="o">=</span> <span class="mf">1.0</span>    <span class="c1"># Gaussian RMS noise level in each time sample</span>
+<span class="n">target_snr</span> <span class="o">=</span> <span class="mf">250.0</span>  <span class="c1"># Total signal-to-noise ratio</span>
+
+<span class="c1"># We construct the single_pulse object with an arbitrary normalization (fluence), </span>
+<span class="c1"># then renormalize to the desired signal-to-noise ratio.</span>
+<span class="c1">#</span>
+<span class="c1"># Note that the &#39;nt&#39; argument to the single_pulse constructor is the number of samples</span>
+<span class="c1"># used internally to represent the pulse (1024 is recommended), not the number of time</span>
+<span class="c1"># samples simulated.  (This part of the simpulse API could be improved!)</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">single_pulse</span><span class="p">(</span><span class="n">nt</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span>    <span class="c1"># number of samples used internally</span>
+                          <span class="n">nfreq</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>  <span class="c1"># number of frequency channels</span>
+                          <span class="n">freq_lo_MHz</span> <span class="o">=</span> <span class="mf">400.0</span><span class="p">,</span>   <span class="c1"># lowest frequency in band (MHz)</span>
+                          <span class="n">freq_hi_MHz</span> <span class="o">=</span> <span class="mf">800.0</span><span class="p">,</span>   <span class="c1"># highest frequency in band (MHz)</span>
+                          <span class="n">dm</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span>            <span class="c1"># dispersion measure in its usual units</span>
+                          <span class="n">sm</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>              <span class="c1"># scattering measure (see docs)</span>
+                          <span class="n">intrinsic_width</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>   <span class="c1"># Gaussian pulse width in seconds</span>
+                          <span class="n">fluence</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>         <span class="c1"># arbitrary, will be renormalized shortly</span>
+                          <span class="n">spectral_index</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># power-law spectrum (freq^spectral_index)</span>
+                          <span class="n">undispersed_arrival_time</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span>  <span class="c1"># arrival time at high frequency</span>
+
+<span class="c1"># Now we renormalize to the desired SNR, by computing the SNR </span>
+<span class="c1"># in the initial normalization, then rescaling.</span>
+<span class="n">initial_snr</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get_signal_to_noise</span><span class="p">(</span><span class="n">sample_dt</span><span class="o">=</span><span class="p">(</span><span class="n">t1</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span><span class="o">/</span><span class="n">nt</span><span class="p">,</span> <span class="n">sample_rms</span><span class="o">=</span><span class="n">sample_rms</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">fluence</span> <span class="o">*=</span> <span class="p">(</span><span class="n">target_snr</span> <span class="o">/</span> <span class="n">initial_snr</span><span class="p">)</span>
+
+<span class="c1"># Simulate noise, then add FRB.</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">sample_rms</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">nfreq</span><span class="p">,</span> <span class="n">nt</span><span class="p">))</span>
+<span class="n">p</span><span class="o">.</span><span class="n">add_to_timestream</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">)</span>
+
+<span class="c1"># Make the plot.  Some matplotlib trivia here:</span>
+<span class="c1">#   - interpolation=&#39;none&#39; to disable interpolation (watch out: not the same as </span>
+<span class="c1">#       interpolation=None, which uses &quot;default&quot; interpolation!)</span>
+<span class="c1">#   - extent=(left,right,bottom,top) defines the ranges on the xy-axes</span>
+<span class="c1">#   - if you use &#39;extent&#39;, you probably also want aspect=&#39;auto&#39;</span>
+<span class="c1">#   - origin=&#39;lower&#39; puts frequency index 0 on bottom of the plot</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span>
+           <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">freq_lo_MHz</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">freq_hi_MHz</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (seconds)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency (MHz)&#39;</span><span class="p">)</span>
+
+<span class="c1">#plt.savefig(&#39;example1_frb.png&#39;)   # write to file</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>                         <span class="c1"># display to screen</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="single_pulse.html" class="btn btn-neutral float-right" title="Simulating FRB’s: class single_pulse" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="simpulse: simulating pulses in radio astronomy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Kendrick Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
