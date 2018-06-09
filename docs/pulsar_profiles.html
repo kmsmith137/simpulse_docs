@@ -1,0 +1,338 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Pulsar profiles, and simulating pulsars &mdash; simpulse  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Pulsar phase models" href="phase_models.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> simpulse
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="single_pulse.html">Simulating FRB’s: class single_pulse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phase_models.html">Pulsar phase models</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pulsar profiles, and simulating pulsars</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">simpulse</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Pulsar profiles, and simulating pulsars</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pulsar_profiles.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pulsar-profiles-and-simulating-pulsars">
+<h1>Pulsar profiles, and simulating pulsars<a class="headerlink" href="#pulsar-profiles-and-simulating-pulsars" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="simpulse.von_mises_profile">
+<em class="property">class </em><code class="descclassname">simpulse.</code><code class="descname">von_mises_profile</code><a class="headerlink" href="#simpulse.von_mises_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents a von Mises profile, which can be used to simulate pulsars.
+(Currently, the von Mises profile is the only periodic pulse profile implemented in simpulse,
+although in the future we might implement more profiles and define a ‘pulsar_profile’ base class.)</p>
+<p>Constructor syntax:</p>
+<blockquote>
+<div>p = simpulse.von_mises_profile(duty_cycle, detrend, min_internal_nphi=0)</div></blockquote>
+<p>where:</p>
+<blockquote>
+<div><p>The ‘duty_cycle’ is defined as D = (pulse full width at half maximum) / (pulse period).
+A reasonable choice is D = 0.1 or so.</p>
+<p>If the boolean variable ‘detrend’ is true, then the mean will be subtracted from the profile.</p>
+<p>It is unlikely that you’ll need to set the ‘min_internal_nphi’ constructor argument, which
+changes the number of phase bins used internally to represent the pulse.  If set to zero, then
+a reasonable default value will be chosen.</p>
+</div></blockquote>
+<p>In order to simulate a pulsar, you need two things: a phase model and a pulse profile.  Then, to do
+the simulation, you can call either profile.eval_integrated_samples() or profile.add_integrated_samples().
+These methods take the phase model as a parameter.</p>
+<p>By default, the profile is normalized so that its peak flux is equal to 1 (before applying the detrending subtraction).
+To change the normalization, you can pass an ‘amplitude’ parameter to most of the von_mises_profile methods.  You may
+find the methods profile.get_single_pulse_signal_to_noise() and profile.get_multi_pulse_signal_to_noise() useful when
+setting the amplitude.</p>
+<p>Mathematically, a profile is just a function rho(Phi) which gives the flux ‘rho’ as a function of pulse phase ‘phi’.
+The von Mises profile is the functional form:</p>
+<blockquote>
+<div>rho(phi) = exp[ -2 kappa sin(pi*phi)^2 ]</div></blockquote>
+<p>where kappa is a narrowness parameter, related to the duty cycle by kappa = log(2) / (2 sin^2(pi*D/2)).</p>
+<dl class="attribute">
+<dt id="simpulse.von_mises_profile.detrend">
+<code class="descname">detrend</code><a class="headerlink" href="#simpulse.von_mises_profile.detrend" title="Permalink to this definition">¶</a></dt>
+<dd><p>If this boolean variable is true, then the mean will be subtracted from the pulse profile.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.von_mises_profile.duty_cycle">
+<code class="descname">duty_cycle</code><a class="headerlink" href="#simpulse.von_mises_profile.duty_cycle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Duty cycle of the pulsar, specified at construction, and defined as D = (pulse FWHM) / (pulse period).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.von_mises_profile.eval_integrated_sample_slow">
+<code class="descname">eval_integrated_sample_slow</code><span class="sig-paren">(</span><em>phi0</em>, <em>phi1</em>, <em>amplitude=1.0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.eval_integrated_sample_slow" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is intended for debugging (hence the “_slow”!)
+Returns the average flux over phase (not time) interval [phi0, phi1].</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.von_mises_profile.eval_integrated_samples">
+<code class="descname">eval_integrated_samples</code><span class="sig-paren">(</span><em>t0</em>, <em>t1</em>, <em>nt</em>, <em>phase_model</em>, <em>amplitude=1.0) -&gt; (1D array</em><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.von_mises_profile.eval_integrated_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method can be used to simulate a pulsar in a regularly spaced sequence of time samples.</p>
+<p>The ‘t0’ argument should be the _beginning_ of the first time sample, and ‘t1’ should be the _end_
+of the last time sample.  Thus, t1=t0+nt*dt, where dt is the length of a sample (not t1=t0+(nt-1)*dt).</p>
+<p>The ‘phase_model’ argument should be an object of type ‘simpulse.phase_model_base’.</p>
+<p>The output is a 1D array of length ‘nsamples’, containing simulated flux values.  Note that each
+flux value is obtained by averaging (in time) the profile over the time sample, not instantanously
+sampling at the midpoint.</p>
+<p>Reminder: if the ‘detrend’ flag was specified at construction, then the simulated flux will be detrended.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.von_mises_profile.get_multi_pulse_signal_to_noise">
+<code class="descname">get_multi_pulse_signal_to_noise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.von_mises_profile.get_multi_pulse_signal_to_noise" title="Permalink to this definition">¶</a></dt>
+<dd><p>get_single_pulse_signal_to_noise(total_time, dt_sample, pulse_freq, sample_rms) -&gt; float</p>
+<p>Returns the total SNR of a train of pulses, accounting for finite time resolution (and detrending,
+if detrend=True was specified at construction), and assuming amplitude=1.</p>
+<p>Strictly speaking, this is an approximation to the true SNR, which may slightly depend
+on the exact arrival times of the pulses.</p>
+<p>The ‘total_time’ argument is the total duration of the pulse train.</p>
+<p>The ‘dt_sample’ argument is the length of each time sample.</p>
+<p>The ‘pulse_freq’ argument is the pulse frequency.
+The ‘sample_rms’ argument is the RMS noise fluctuation in each time sample.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.von_mises_profile.get_profile_fft">
+<code class="descname">get_profile_fft</code><span class="sig-paren">(</span><em>nout=0) -&gt; (1D array</em><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.von_mises_profile.get_profile_fft" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Fourier transform of the profile</p>
+<blockquote>
+<div>rho_m = int_0^1 dphi rho(phi) e^{i m phi}.</div></blockquote>
+<p>Note that rho_m is real, and rho_m = rho_{-m}, since the von Mises profile is symmetric.</p>
+<p>The DC mode rho_0 will equal ‘mean_flux’ if detrend=False, or 0 if detrend=True.</p>
+<p>The return value is a 1D array of length ‘nout’.  If nout=0 (the default), then it defaults to
+(internal_nphi/2+10, the number of Fourier coefficients which are computed internally.  (If ‘nout’
+is larger than this, then the returned array is zero-padded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.von_mises_profile.get_single_pulse_signal_to_noise">
+<code class="descname">get_single_pulse_signal_to_noise</code><span class="sig-paren">(</span><em>dt_sample</em>, <em>pulse_freq</em>, <em>sample_rms</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.get_single_pulse_signal_to_noise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the SNR of a single pulse, accounting for finite time resolution (and detrending,
+if detrend=True was specified at construction), and assuming amplitude=1.</p>
+<p>Strictly speaking, the return value is an approximation to the true SNR, which may slightly depend
+on the exact arrival time of the pulse.</p>
+<p>The ‘dt_sample’ argument is the length of each time sample.</p>
+<p>The ‘pulse_freq’ argument is the pulse frequency.
+The ‘sample_rms’ argument is the RMS noise fluctuation in each time sample.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.von_mises_profile.internal_nphi">
+<code class="descname">internal_nphi</code><a class="headerlink" href="#simpulse.von_mises_profile.internal_nphi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of phase bins used internally to represent the pulse.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.von_mises_profile.mean_flux">
+<code class="descname">mean_flux</code><a class="headerlink" href="#simpulse.von_mises_profile.mean_flux" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mean flux of the pulse, in its default normalization where the peak flux is 1.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.von_mises_profile.point_eval">
+<code class="descname">point_eval</code><span class="sig-paren">(</span><em>phi</em>, <em>amplitude=1.0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.point_eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the instantaneous flux evaluated at pulse phase ‘phi’.
+Reminder: if the ‘detrend’ flag was specified at construction, then the simulated flux will be detrended.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="phase_models.html" class="btn btn-neutral" title="Pulsar phase models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Kendrick Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

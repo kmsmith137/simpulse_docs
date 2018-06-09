@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Pulsar phase models &mdash; simpulse  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Pulsar profiles, and simulating pulsars" href="pulsar_profiles.html" />
+    <link rel="prev" title="Simulating FRB’s: class single_pulse" href="single_pulse.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> simpulse
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="single_pulse.html">Simulating FRB’s: class single_pulse</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Pulsar phase models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pulsar_profiles.html">Pulsar profiles, and simulating pulsars</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">simpulse</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Pulsar phase models</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/phase_models.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pulsar-phase-models">
+<h1>Pulsar phase models<a class="headerlink" href="#pulsar-phase-models" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="simpulse.phase_model_base">
+<em class="property">class </em><code class="descclassname">simpulse.</code><code class="descname">phase_model_base</code><a class="headerlink" href="#simpulse.phase_model_base" title="Permalink to this definition">¶</a></dt>
+<dd><p>This virtual base class represents a pulsar phase model Phi(t).  By definition, this is a function which takes
+integer values at times when pulses are observed.  The specific form of Phi(t) is determined by the subclass.</p>
+<p>Currently, only one subclass of phase_model_base is implemented: constant_acceleration_phase_model (see below).</p>
+<dl class="method">
+<dt id="simpulse.phase_model_base.eval_phi">
+<code class="descname">eval_phi</code><span class="sig-paren">(</span><em>t</em>, <em>nderivs=0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.phase_model_base.eval_phi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the phase model Phi(t) at a single time ‘t’.
+Can be called with nderivs=0 to get Phi(t), or nderivs &gt; 0 to get derivatives (d/dt)^n Phi.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.phase_model_base.eval_phi_sequence">
+<code class="descname">eval_phi_sequence</code><span class="sig-paren">(</span><em>t0</em>, <em>t1</em>, <em>nsamples</em>, <em>nderivs=0) -&gt; (1D array</em><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.phase_model_base.eval_phi_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the phase model at a sequence of equally spaced time samples.
+The ‘t0’ and ‘t1’ args are the starting/ending times of the sampled region.</p>
+<p>The return value is an array of length ‘nsamples’, whose i-th entry is the phase model Phi(t)
+evaluated at t = ((nsamples-i-1)*t0 + i*t1) / (nsamples-1).</p>
+<p>Can be called with nderivs=0 to get Phi(t), or nderivs &gt; 0 to get derivatives (d/dt)^n Phi.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="simpulse.constant_acceleration_phase_model">
+<em class="property">class </em><code class="descclassname">simpulse.</code><code class="descname">constant_acceleration_phase_model</code><a class="headerlink" href="#simpulse.constant_acceleration_phase_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents a pulsar whose acceleration (i.e. frequency derivative df/dt)
+is constant in time.  (Subclass of phase_model_base.)</p>
+<p>Constructor syntax:</p>
+<blockquote>
+<div>pm = simpulse.constant_acceleration_phase_model(phi0, f0, fdot, t0)</div></blockquote>
+<p>where:</p>
+<blockquote>
+<div><p>phi0 = value of the phase at reference time ‘t0’</p>
+<p>f0 = value of the frequency f=dphi/dt at reference time ‘t0’</p>
+<p>fdot = frequency derivative df/dt (note that this is independent of time)</p>
+<p>t0 = a reference time (can be zero, but a nonzero value may be convenient)</p>
+</div></blockquote>
+<dl class="method">
+<dt id="simpulse.constant_acceleration_phase_model.eval_phi">
+<code class="descname">eval_phi</code><span class="sig-paren">(</span><em>t</em>, <em>nderivs=0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.constant_acceleration_phase_model.eval_phi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the phase model Phi(t) at a single time ‘t’.
+Can be called with nderivs=0 to get Phi(t), or nderivs &gt; 0 to get derivatives (d/dt)^n Phi.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.constant_acceleration_phase_model.eval_phi_sequence">
+<code class="descname">eval_phi_sequence</code><span class="sig-paren">(</span><em>t0</em>, <em>t1</em>, <em>nsamples</em>, <em>nderivs=0) -&gt; (1D array</em><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.constant_acceleration_phase_model.eval_phi_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the phase model at a sequence of equally spaced time samples.
+The ‘t0’ and ‘t1’ args are the starting/ending times of the sampled region.</p>
+<p>The return value is an array of length ‘nsamples’, whose i-th entry is the phase model Phi(t)
+evaluated at t = ((nsamples-i-1)*t0 + i*t1) / (nsamples-1).</p>
+<p>Can be called with nderivs=0 to get Phi(t), or nderivs &gt; 0 to get derivatives (d/dt)^n Phi.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.constant_acceleration_phase_model.f0">
+<code class="descname">f0</code><a class="headerlink" href="#simpulse.constant_acceleration_phase_model.f0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the frequency at reference time ‘t0’ (same as constructor argument with same name)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.constant_acceleration_phase_model.fdot">
+<code class="descname">fdot</code><a class="headerlink" href="#simpulse.constant_acceleration_phase_model.fdot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frequency derivative df/dt (same as constructor argument with same name)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.constant_acceleration_phase_model.phi0">
+<code class="descname">phi0</code><a class="headerlink" href="#simpulse.constant_acceleration_phase_model.phi0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the phase at reference time ‘t0’ (same as constructor argument with same name)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.constant_acceleration_phase_model.t0">
+<code class="descname">t0</code><a class="headerlink" href="#simpulse.constant_acceleration_phase_model.t0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference time where ‘phi0’ and ‘f0’ are defined (same as constructor argument with same name)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pulsar_profiles.html" class="btn btn-neutral float-right" title="Pulsar profiles, and simulating pulsars" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="single_pulse.html" class="btn btn-neutral" title="Simulating FRB’s: class single_pulse" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Kendrick Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

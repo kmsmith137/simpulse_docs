@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Simulating FRB’s: class single_pulse &mdash; simpulse  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Pulsar phase models" href="phase_models.html" />
+    <link rel="prev" title="simpulse: simulating pulses in radio astronomy" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> simpulse
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Simulating FRB’s: class single_pulse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phase_models.html">Pulsar phase models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pulsar_profiles.html">Pulsar profiles, and simulating pulsars</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">simpulse</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Simulating FRB’s: class single_pulse</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/single_pulse.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="simulating-frb-s-class-single-pulse">
+<h1>Simulating FRB’s: class single_pulse<a class="headerlink" href="#simulating-frb-s-class-single-pulse" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="simpulse.single_pulse">
+<em class="property">class </em><code class="descclassname">simpulse.</code><code class="descname">single_pulse</code><a class="headerlink" href="#simpulse.single_pulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents a single dispersed pulse (i.e. an FRB), with frequency channelization specified at contruction.</p>
+<p>Constructor syntax:</p>
+<blockquote>
+<div>p = single_pulse(nt, nfreq, freq_lo_MHz, freq_hi_MHz, dm, sm, intrinsic_width, fluence, spectral_index, undispersed_arrival_time)</div></blockquote>
+<p>where:</p>
+<blockquote>
+<div><p>nt = number of samples used internally to represent the pulse (suggest power of two; 1024 is usually good).</p>
+<p>nfreq = number of frequency channels (assumed equally spaced)</p>
+<p>freq_lo_MHz = lowest frequency in band (MHz)</p>
+<p>freq_hi_MHz = highest frequency in band (MHz)</p>
+<p>dm = dispersion measure in its standard units (pc cm^{-3}).</p>
+<p>sm = scattering measure, which we define to be scattering time in milliseconds (not seconds!) at 1 GHz.</p>
+<p>intrinsic_width = frequency-independent Gaussian width in seconds (not milliseconds).</p>
+<p>fluence = integrated flux (i.e. units are flux-time) at central frequency of band</p>
+<p>spectral_index = parametrizes power-law frequency dependence of fluence of the form nu^alpha, where alpha is the spectral index</p>
+<p>undispersed_arrival_time = arrival time of pulse at high frequency, in seconds relative to an arbitrary origin)</p>
+</div></blockquote>
+<dl class="method">
+<dt id="simpulse.single_pulse.add_to_timestream">
+<code class="descname">add_to_timestream</code><span class="sig-paren">(</span><em>out</em>, <em>t0</em>, <em>t1</em>, <em>freq_hi_to_lo=False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#simpulse.single_pulse.add_to_timestream" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method adds the pulse to a 2D array of (frequency, time) samples.
+It is sometimes called incrementally, as a stream of 2D arrays is generated.
+The ‘out’ arg is a 2d array with shape (nfreq, out_nt).</p>
+<p>The ‘t0’ and ‘t1’ args are the endpoints of the sampled region, in seconds relative
+to the same origin as the undispersed_arrival_time.</p>
+<p>By default, the frequencies are assumed ordered from lowest to highest.
+WARNING: this ordering is used throughout ‘simpulse’, but the opposite ordering is used in rf_pipelines and bonsai!!
+To get the opposite ordering (highest-to-lowest), set freq_hi_to_lo=True.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.single_pulse.dm">
+<code class="descname">dm</code><a class="headerlink" href="#simpulse.single_pulse.dm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dispersion measure in its standard units (pc cm^{-3})</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.single_pulse.fluence">
+<code class="descname">fluence</code><a class="headerlink" href="#simpulse.single_pulse.fluence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integrated flux (i.e. units are flux-time) at center of band</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.single_pulse.freq_hi_MHz">
+<code class="descname">freq_hi_MHz</code><a class="headerlink" href="#simpulse.single_pulse.freq_hi_MHz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Highest frequency in band (MHz).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.single_pulse.freq_lo_MHz">
+<code class="descname">freq_lo_MHz</code><a class="headerlink" href="#simpulse.single_pulse.freq_lo_MHz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lowest frequency in band (MHz).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.single_pulse.get_endpoints">
+<code class="descname">get_endpoints</code><span class="sig-paren">(</span><em>freq_lo_MHz</em>, <em>freq_hi_MHz) -&gt; (t0</em>, <em>t1</em><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.single_pulse.get_endpoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a pair (t0,t1): earliest and latest arrival times in the band [freq_lo_MHz, freq_hi_MHz].
+(Note that both of these will be larger than single_pulse::undispersed_arrival_time, unless the intrinsic width is very large).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.single_pulse.get_signal_to_noise">
+<code class="descname">get_signal_to_noise</code><span class="sig-paren">(</span><em>self</em>, <em>sample_dt</em>, <em>sample_rms=1.0</em>, <em>channel_weights=None</em>, <em>sample_t0=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.single_pulse.get_signal_to_noise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns total signal-to-noise for all frequency channels and time samples combined.
+The signal-to-noise of a sampled pulse depends on ‘sample_dt’, the length of a sample in seconds.</p>
+<p>The ‘sample_rms’ argument is the RMS noise per sample.  This parameter can either be a scalar (if
+all frequency channels have the same noise level) or a 1D array of length ‘nfreq’.</p>
+<p>The ‘channel_weights’ argument is the channel weighting.  This parameter can be a scalar (if all
+all frequency channels have the same weight) or a 1D array of length ‘nfreq’.</p>
+<p>NOTE: if ‘channel_weights’ is unspecified (None) then it defaults to 1/sample_rms^2 (not uniform weighting!)</p>
+<p>In principle, the signal-to-noise depends on ‘sample_t0’, the starting time of an arbitrarily chosen
+sample, although this dependence will be very weak in realistic cases!  This is included as an
+optional parameter, in case exploring the dependence is useful.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.single_pulse.intrinsic_width">
+<code class="descname">intrinsic_width</code><a class="headerlink" href="#simpulse.single_pulse.intrinsic_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frequency-independent Gaussian width in seconds (not milliseconds)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.single_pulse.nfreq">
+<code class="descname">nfreq</code><a class="headerlink" href="#simpulse.single_pulse.nfreq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of frequency channels in band (assumed equally spaced)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.single_pulse.pulse_nt">
+<code class="descname">pulse_nt</code><a class="headerlink" href="#simpulse.single_pulse.pulse_nt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of samples used internally to represent the pulse</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.single_pulse.sm">
+<code class="descname">sm</code><a class="headerlink" href="#simpulse.single_pulse.sm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scattering measure, which we define to be scattering time in milliseconds (not seconds!) at 1 GHz</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.single_pulse.spectral_index">
+<code class="descname">spectral_index</code><a class="headerlink" href="#simpulse.single_pulse.spectral_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parametrizes power-law frequency dependence of fluence: (nu/nu_c)^alpha, where alpha is the spectral index</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.single_pulse.undispersed_arrival_time">
+<code class="descname">undispersed_arrival_time</code><a class="headerlink" href="#simpulse.single_pulse.undispersed_arrival_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Arrival time of pulse at high frequency, in seconds relative to an arbitrary origin</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="phase_models.html" class="btn btn-neutral float-right" title="Pulsar phase models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="simpulse: simulating pulses in radio astronomy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Kendrick Smith.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
