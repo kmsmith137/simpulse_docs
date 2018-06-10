@@ -79,7 +79,11 @@
             
             
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction and Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction and Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API reference</a></li>
 </ul>
@@ -148,7 +152,110 @@
             
   <div class="section" id="introduction-and-installation">
 <h1>Introduction and Installation<a class="headerlink" href="#introduction-and-installation" title="Permalink to this headline">¶</a></h1>
-<p>Placeholder!</p>
+<p>simpulse is a C++/python library for simulating FRB’s and pulsars.</p>
+<p>It is not designed for speed, but simulates pulses very accurately, keeping track of
+effects such as dispersion smearing within frequency channels, or finite time sampling artifacts.</p>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul>
+<li><p class="first">Standard prerequisites</p>
+<ul class="simple">
+<li>a relatively recent C++ compiler</li>
+<li>python, numpy</li>
+<li>matplotlib not required, but recommended in order to run example scripts</li>
+<li>cmake</li>
+</ul>
+</li>
+<li><p class="first"><a class="reference external" href="https://github.com/pybind/pybind11">pybind11</a>, a C++ header-only library for interoperating with python.  I think
+the only option here is to build from source.  The following worked for me:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>git clone https://github.com/pybind/pybind11
+cd pybind11
+mkdir build
+cd build
+
+# The -DPYBIND11_PYTHON_VERSION=2.7 flag is important.
+# This uses python 2 instead of python 3.
+cmake -DCMAKE_INSTALL_PREFIX=$HOME
+make install
+</pre></div>
+</div>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.fftw.org/">FFTW3</a>, a portable high-performance FFT library</p>
+<ul>
+<li><p class="first">Linux (Ubuntu): <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libfftw3-dev</span></code></p>
+</li>
+<li><p class="first">Linux (CentOS): <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">fftw-devel</span></code></p>
+</li>
+<li><p class="first">OSX: <code class="docutils literal"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">fftw</span></code></p>
+</li>
+<li><p class="first">Building from source.  The following worked for me:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>wget http://www.fftw.org/fftw-3.3.8.tar.gz   # latest as of June 2018
+tar zxvf fftw-3.3.8.tar.gz
+cd fftw-3.3.8
+
+# You may as well use --enable-single here, to build both single-precision
+# and double-precision versions
+./configure --prefix=$HOME --enable-shared --enable-single
+make
+make install
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Quick-and-dirty instructions:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>git clone https://github.com/kmsmith137/simpulse
+cd simpulse
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=$HOME ..
+make -j4
+make install
+</pre></div>
+</div>
+<p>In a little more detail:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">This is a standard (I hope!) cmake build.  I recommend the “out-of-source” mode for building packages with
+cmake, where you create a separate <code class="docutils literal"><span class="pre">build</span></code> directory for compiling.</p>
+</li>
+<li><p class="first">When you run <cite>cmake</cite> in the build directory, it should locate all of the necessary ingredients on your machine
+(fftw3, python, pybind11, etc.) and create a Makefile.</p>
+<p>After that, you shouldn’t need need to run cmake again, it will suffice to run <cite>make</cite> invocations such as:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span>           <span class="c1"># build everything</span>
+<span class="n">make</span> <span class="n">install</span>   <span class="c1"># install libraries to $HOME/lib, headers to $HOME/include, etc.</span>
+<span class="n">make</span> <span class="n">uninstall</span> <span class="c1"># undo &#39;make install&#39;: delete simpulse libraries from $HOME/lib, etc.</span>
+<span class="n">make</span> <span class="n">clean</span>     <span class="c1"># delete all build products, but don&#39;t undo &#39;make install&#39;</span>
+</pre></div>
+</div>
+<p>However, note that these <cite>make</cite> invocations <strong>will only work in the build directory</strong> where you originally ran cmake.</p>
+</li>
+<li><p class="first">In the instructions above, I suggested invoking cmake with <code class="docutils literal"><span class="pre">-DCMAKE_INSTALL_PREFIX=$HOME</span></code>.
+Then <cite>make install</cite> will install simpulse libraries in $HOME/lib, headers in $HOME/include, etc.
+This can be changed if you want to install simpulse elsewhere.  By default, cmake installs to /usr/local.</p>
+</li>
+<li><p class="first">Here are some more influential cmake variables, which can be set with <code class="docutils literal"><span class="pre">cmake</span> <span class="pre">-DVAR=VALUE</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>CMAKE_CXX_FLAGS: compiler flags
+CMAKE_MODULE_PATH: look for cmake modules (ending in .cmake) in this directory
+CMAKE_INCLUDE_PATH: look for header files in this directory
+CMAKE_LIBRARY_PATH: look for libraries in this directory
+CMAKE_PREFIX_PATH: look for libraries in ${CMAKE_PREFIX_PATH}/lib,
+                   header files in ${CMAKE_PREFIX_PATH}/include, etc.
+</pre></div>
+</div>
+</li>
+<li><p class="first">Let me know if you have any trouble with cmake.  I am still getting used to it, so there may
+be bugs in the build scripts, or room for improvement.</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 
 
