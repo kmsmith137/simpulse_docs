@@ -29,7 +29,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Pulsar phase models" href="phase_models.html" />
-    <link rel="prev" title="Example 1: simulating an FRB" href="example_frb.html" /> 
+    <link rel="prev" title="API reference" href="api_reference.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -79,10 +79,15 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="example_frb.html">Example 1: simulating an FRB</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Simulating FRB’s: class single_pulse</a></li>
-<li class="toctree-l1"><a class="reference internal" href="phase_models.html">Pulsar phase models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pulsar_profiles.html">Pulsar profiles, and simulating pulsars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api_reference.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Simulating FRB’s: class single_pulse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phase_models.html">Pulsar phase models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pulsar_profiles.html">Pulsar profiles, and simulating pulsars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -128,6 +133,8 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
+          <li><a href="api_reference.html">API reference</a> &raquo;</li>
+        
       <li>Simulating FRB’s: class single_pulse</li>
     
     
@@ -154,8 +161,10 @@
 <em class="property">class </em><code class="descclassname">simpulse.</code><code class="descname">single_pulse</code><a class="headerlink" href="#simpulse.single_pulse" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class represents a single dispersed pulse (i.e. an FRB), with frequency channelization specified at contruction.</p>
 <p>Constructor syntax:</p>
-<blockquote>
-<div>p = single_pulse(nt, nfreq, freq_lo_MHz, freq_hi_MHz, dm, sm, intrinsic_width, fluence, spectral_index, undispersed_arrival_time)</div></blockquote>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">single_pulse</span><span class="p">(</span><span class="n">nt</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">freq_lo_MHz</span><span class="p">,</span> <span class="n">freq_hi_MHz</span><span class="p">,</span> <span class="n">dm</span><span class="p">,</span> <span class="n">sm</span><span class="p">,</span> <span class="n">intrinsic_width</span><span class="p">,</span>
+                 <span class="n">fluence</span><span class="p">,</span> <span class="n">spectral_index</span><span class="p">,</span> <span class="n">undispersed_arrival_time</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>where:</p>
 <blockquote>
 <div><p>nt = number of samples used internally to represent the pulse (suggest power of two; 1024 is usually good).</p>
@@ -167,7 +176,7 @@
 <p>intrinsic_width = frequency-independent Gaussian width in seconds (not milliseconds).</p>
 <p>fluence = integrated flux (i.e. units are flux-time) at central frequency of band</p>
 <p>spectral_index = parametrizes power-law frequency dependence of fluence of the form nu^alpha, where alpha is the spectral index</p>
-<p>undispersed_arrival_time = arrival time of pulse at high frequency, in seconds relative to an arbitrary origin)</p>
+<p>undispersed_arrival_time = arrival time of pulse at high frequency, in seconds, and relative to the same origin used in add_to_timestream()</p>
 </div></blockquote>
 <dl class="method">
 <dt id="simpulse.single_pulse.add_to_timestream">
@@ -279,7 +288,7 @@ optional parameter, in case exploring the dependence is useful.</p>
         <a href="phase_models.html" class="btn btn-neutral float-right" title="Pulsar phase models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="example_frb.html" class="btn btn-neutral" title="Example 1: simulating an FRB" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="api_reference.html" class="btn btn-neutral" title="API reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -288,11 +297,9 @@ optional parameter, in case exploring the dependence is useful.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Kendrick Smith.
 
     </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  </div> 
 
 </footer>
 

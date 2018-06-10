@@ -1,10 +1,9 @@
-simpulse: simulating pulses in radio astronomy
-=======================================================================
+simpulse: simulating radio pulses in C++/python
+===============================================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
-   example_frb
-   single_pulse
-   phase_models
-   pulsar_profiles
+   intro
+   examples
+   api_reference

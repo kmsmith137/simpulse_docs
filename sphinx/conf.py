@@ -28,6 +28,9 @@ autoclass_content = 'both'
 # Decided against 'show-inheritance' here
 autodoc_default_flags = [ 'inherited-members' ]
 
+html_show_copyright = False
+html_show_sphinx = False
+
 
 # -- General configuration ------------------------------------------------
 
@@ -56,7 +59,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'simpulse'
-copyright = u'2018, Kendrick Smith'
+#copyright = u'2018, Kendrick Smith'
 author = u'Kendrick Smith'
 
 # The version info for the project you're documenting, acts as replacement for

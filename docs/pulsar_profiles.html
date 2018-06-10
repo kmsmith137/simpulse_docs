@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Miscellaneous" href="misc.html" />
     <link rel="prev" title="Pulsar phase models" href="phase_models.html" /> 
 
   
@@ -78,10 +79,15 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="example_frb.html">Example 1: simulating an FRB</a></li>
-<li class="toctree-l1"><a class="reference internal" href="single_pulse.html">Simulating FRB’s: class single_pulse</a></li>
-<li class="toctree-l1"><a class="reference internal" href="phase_models.html">Pulsar phase models</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Pulsar profiles, and simulating pulsars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api_reference.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="single_pulse.html">Simulating FRB’s: class single_pulse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phase_models.html">Pulsar phase models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Pulsar profiles, and simulating pulsars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -127,6 +133,8 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
+          <li><a href="api_reference.html">API reference</a> &raquo;</li>
+        
       <li>Pulsar profiles, and simulating pulsars</li>
     
     
@@ -155,16 +163,19 @@
 (Currently, the von Mises profile is the only periodic pulse profile implemented in simpulse,
 although in the future we might implement more profiles and define a ‘pulsar_profile’ base class.)</p>
 <p>Constructor syntax:</p>
-<blockquote>
-<div>p = simpulse.von_mises_profile(duty_cycle, detrend, min_internal_nphi=0)</div></blockquote>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">von_mises_profile</span><span class="p">(</span><span class="n">duty_cycle</span><span class="p">,</span> <span class="n">detrend</span><span class="p">,</span> <span class="n">min_internal_nphi</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>where:</p>
 <blockquote>
-<div><p>The ‘duty_cycle’ is defined as D = (pulse full width at half maximum) / (pulse period).
-A reasonable choice is D = 0.1 or so.</p>
-<p>If the boolean variable ‘detrend’ is true, then the mean will be subtracted from the profile.</p>
-<p>It is unlikely that you’ll need to set the ‘min_internal_nphi’ constructor argument, which
+<div><ul class="simple">
+<li>The ‘duty_cycle’ is defined as D = (pulse full width at half maximum) / (pulse period).
+A reasonable choice is D = 0.1 or so.</li>
+<li>If the boolean variable ‘detrend’ is true, then the mean will be subtracted from the profile.</li>
+<li>It is unlikely that you’ll need to set the ‘min_internal_nphi’ constructor argument, which
 changes the number of phase bins used internally to represent the pulse.  If set to zero, then
-a reasonable default value will be chosen.</p>
+a reasonable default value will be chosen.</li>
+</ul>
 </div></blockquote>
 <p>In order to simulate a pulsar, you need two things: a phase model and a pulse profile.  Then, to do
 the simulation, you can call either profile.eval_integrated_samples() or profile.add_integrated_samples().
@@ -212,9 +223,8 @@ sampling at the midpoint.</p>
 
 <dl class="method">
 <dt id="simpulse.von_mises_profile.get_multi_pulse_signal_to_noise">
-<code class="descname">get_multi_pulse_signal_to_noise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.von_mises_profile.get_multi_pulse_signal_to_noise" title="Permalink to this definition">¶</a></dt>
-<dd><p>get_single_pulse_signal_to_noise(total_time, dt_sample, pulse_freq, sample_rms) -&gt; float</p>
-<p>Returns the total SNR of a train of pulses, accounting for finite time resolution (and detrending,
+<code class="descname">get_multi_pulse_signal_to_noise</code><span class="sig-paren">(</span><em>total_time</em>, <em>dt_sample</em>, <em>pulse_freq</em>, <em>sample_rms</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.get_multi_pulse_signal_to_noise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total SNR of a train of pulses, accounting for finite time resolution (and detrending,
 if detrend=True was specified at construction), and assuming amplitude=1.</p>
 <p>Strictly speaking, this is an approximation to the true SNR, which may slightly depend
 on the exact arrival times of the pulses.</p>
@@ -227,13 +237,13 @@ The ‘sample_rms’ argument is the RMS noise fluctuation in each time sample.<
 <dl class="method">
 <dt id="simpulse.von_mises_profile.get_profile_fft">
 <code class="descname">get_profile_fft</code><span class="sig-paren">(</span><em>nout=0) -&gt; (1D array</em><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.von_mises_profile.get_profile_fft" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the Fourier transform of the profile</p>
+<dd><p>Returns the Fourier transform of the profile:</p>
 <blockquote>
 <div>rho_m = int_0^1 dphi rho(phi) e^{i m phi}.</div></blockquote>
 <p>Note that rho_m is real, and rho_m = rho_{-m}, since the von Mises profile is symmetric.</p>
 <p>The DC mode rho_0 will equal ‘mean_flux’ if detrend=False, or 0 if detrend=True.</p>
 <p>The return value is a 1D array of length ‘nout’.  If nout=0 (the default), then it defaults to
-(internal_nphi/2+10, the number of Fourier coefficients which are computed internally.  (If ‘nout’
+(internal_nphi/2+1), the number of Fourier coefficients which are computed internally.  (If ‘nout’
 is larger than this, then the returned array is zero-padded.</p>
 </dd></dl>
 
@@ -280,6 +290,8 @@ Reminder: if the ‘detrend’ flag was specified at construction, then the simu
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="misc.html" class="btn btn-neutral float-right" title="Miscellaneous" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
       
         <a href="phase_models.html" class="btn btn-neutral" title="Pulsar phase models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
@@ -290,11 +302,9 @@ Reminder: if the ‘detrend’ flag was specified at construction, then the simu
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Kendrick Smith.
 
     </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  </div> 
 
 </footer>
 

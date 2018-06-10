@@ -79,10 +79,15 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="example_frb.html">Example 1: simulating an FRB</a></li>
-<li class="toctree-l1"><a class="reference internal" href="single_pulse.html">Simulating FRB’s: class single_pulse</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Pulsar phase models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pulsar_profiles.html">Pulsar profiles, and simulating pulsars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api_reference.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="single_pulse.html">Simulating FRB’s: class single_pulse</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Pulsar phase models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pulsar_profiles.html">Pulsar profiles, and simulating pulsars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -127,6 +132,8 @@
   <ul class="wy-breadcrumbs">
     
       <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="api_reference.html">API reference</a> &raquo;</li>
         
       <li>Pulsar phase models</li>
     
@@ -180,8 +187,9 @@ evaluated at t = ((nsamples-i-1)*t0 + i*t1) / (nsamples-1).</p>
 <dd><p>This class represents a pulsar whose acceleration (i.e. frequency derivative df/dt)
 is constant in time.  (Subclass of phase_model_base.)</p>
 <p>Constructor syntax:</p>
-<blockquote>
-<div>pm = simpulse.constant_acceleration_phase_model(phi0, f0, fdot, t0)</div></blockquote>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pm</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">constant_acceleration_phase_model</span><span class="p">(</span><span class="n">phi0</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">fdot</span><span class="p">,</span> <span class="n">t0</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>where:</p>
 <blockquote>
 <div><p>phi0 = value of the phase at reference time ‘t0’</p>
@@ -254,11 +262,9 @@ evaluated at t = ((nsamples-i-1)*t0 + i*t1) / (nsamples-1).</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Kendrick Smith.
 
     </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  </div> 
 
 </footer>
 
