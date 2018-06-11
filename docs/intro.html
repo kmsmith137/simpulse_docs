@@ -137,8 +137,6 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
-          
         
       </li>
     
@@ -155,6 +153,9 @@
 <p>simpulse is a C++/python library for simulating FRB’s and pulsars.</p>
 <p>It is not designed for speed, but simulates pulses very accurately, keeping track of
 effects such as dispersion smearing within frequency channels, or finite time sampling artifacts.</p>
+<p>Currently, simpulse makes two-dimensional simulations of FRB’s (where the axes are frequency and time),
+and one-dimensional simulations of pulsars (where the axis is time).  Two-dimensional pulsar simulations
+are coming soon!</p>
 <div class="section" id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <blockquote>
@@ -163,19 +164,20 @@ effects such as dispersion smearing within frequency channels, or finite time sa
 <ul class="simple">
 <li>a relatively recent C++ compiler</li>
 <li>python, numpy</li>
-<li>matplotlib not required, but recommended in order to run example scripts</li>
 <li>cmake</li>
+<li>matplotlib is not required, but recommended in order to run example scripts</li>
 </ul>
 </li>
-<li><p class="first"><a class="reference external" href="https://github.com/pybind/pybind11">pybind11</a>, a C++ header-only library for interoperating with python.  I think
+<li><p class="first"><a class="reference external" href="https://github.com/pybind/pybind11">pybind11</a>, a C++ header-only library for C++/python interoperability.  I think
 the only option here is to build from source.  The following worked for me:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>git clone https://github.com/pybind/pybind11
 cd pybind11
 mkdir build
 cd build
 
-# The -DPYBIND11_PYTHON_VERSION=2.7 flag is important.
-# This uses python 2 instead of python 3.
+# !!! The -DPYBIND11_PYTHON_VERSION=2.7 flag is important here !!!
+# This tells pybind11 that you will be using python 2 instead of python 3.
+
 cmake -DCMAKE_INSTALL_PREFIX=$HOME
 make install
 </pre></div>
@@ -190,7 +192,7 @@ make install
 <li><p class="first">OSX: <code class="docutils literal"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">fftw</span></code></p>
 </li>
 <li><p class="first">Building from source.  The following worked for me:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>wget http://www.fftw.org/fftw-3.3.8.tar.gz   # latest as of June 2018
+<div class="highlight-default"><div class="highlight"><pre><span></span>wget http://www.fftw.org/fftw-3.3.8.tar.gz  # latest version as of June 2018
 tar zxvf fftw-3.3.8.tar.gz
 cd fftw-3.3.8
 
@@ -215,7 +217,7 @@ cd simpulse
 mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=$HOME ..
-make -j4
+make -j4    # -j4 uses four threads and is optional
 make install
 </pre></div>
 </div>
@@ -227,16 +229,17 @@ cmake, where you create a separate <code class="docutils literal"><span class="p
 </li>
 <li><p class="first">When you run <cite>cmake</cite> in the build directory, it should locate all of the necessary ingredients on your machine
 (fftw3, python, pybind11, etc.) and create a Makefile.</p>
-<p>After that, you shouldn’t need need to run cmake again, it will suffice to run <cite>make</cite> invocations such as:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span>           <span class="c1"># build everything</span>
+<p>After that, you shouldn’t need need to run cmake again.  It should suffice to run <cite>make</cite> invocations such as:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build</span>
+<span class="n">make</span> <span class="o">-</span><span class="n">j4</span>       <span class="c1"># build everything (-j4 uses four threads and is optional)</span>
 <span class="n">make</span> <span class="n">install</span>   <span class="c1"># install libraries to $HOME/lib, headers to $HOME/include, etc.</span>
 <span class="n">make</span> <span class="n">uninstall</span> <span class="c1"># undo &#39;make install&#39;: delete simpulse libraries from $HOME/lib, etc.</span>
 <span class="n">make</span> <span class="n">clean</span>     <span class="c1"># delete all build products, but don&#39;t undo &#39;make install&#39;</span>
 </pre></div>
 </div>
-<p>However, note that these <cite>make</cite> invocations <strong>will only work in the build directory</strong> where you originally ran cmake.</p>
+<p>However, note that these <cite>make</cite> invocations <em>will only work in the build directory where you originally ran cmake</em>.</p>
 </li>
-<li><p class="first">In the instructions above, I suggested invoking cmake with <code class="docutils literal"><span class="pre">-DCMAKE_INSTALL_PREFIX=$HOME</span></code>.
+<li><p class="first">I usually run cmake with <code class="docutils literal"><span class="pre">-DCMAKE_INSTALL_PREFIX=$HOME</span></code>.
 Then <cite>make install</cite> will install simpulse libraries in $HOME/lib, headers in $HOME/include, etc.
 This can be changed if you want to install simpulse elsewhere.  By default, cmake installs to /usr/local.</p>
 </li>

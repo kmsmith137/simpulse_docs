@@ -141,8 +141,6 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/pulsar_profiles.rst.txt" rel="nofollow"> View page source</a>
-          
         
       </li>
     
@@ -159,9 +157,9 @@
 <dl class="class">
 <dt id="simpulse.von_mises_profile">
 <em class="property">class </em><code class="descclassname">simpulse.</code><code class="descname">von_mises_profile</code><a class="headerlink" href="#simpulse.von_mises_profile" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class represents a von Mises profile, which can be used to simulate pulsars.
-(Currently, the von Mises profile is the only periodic pulse profile implemented in simpulse,
-although in the future we might implement more profiles and define a ‘pulsar_profile’ base class.)</p>
+<dd><p>This class represents a von Mises pulsar profile.  (Currently, the von Mises profile is the only
+periodic profile implemented in simpulse, although in the future we might implement more profiles
+and define a ‘pulsar_profile’ base class.)</p>
 <p>Constructor syntax:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">von_mises_profile</span><span class="p">(</span><span class="n">duty_cycle</span><span class="p">,</span> <span class="n">detrend</span><span class="p">,</span> <span class="n">min_internal_nphi</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
@@ -181,10 +179,9 @@ a reasonable default value will be chosen.</li>
 the simulation, you can call either profile.eval_integrated_samples() or profile.add_integrated_samples().
 These methods take the phase model as a parameter.</p>
 <p>By default, the profile is normalized so that its peak flux is equal to 1 (before applying the detrending subtraction).
-To change the normalization, you can pass an ‘amplitude’ parameter to most of the von_mises_profile methods.  You may
-find the methods profile.get_single_pulse_signal_to_noise() and profile.get_multi_pulse_signal_to_noise() useful when
-setting the amplitude.</p>
-<p>Mathematically, a profile is just a function rho(Phi) which gives the flux ‘rho’ as a function of pulse phase ‘phi’.
+The normalization can be changed by setting the ‘peak_flux’ property, setting the ‘mean_flux’ propery, calling
+set_single_pulse_signal_to_noise(), or calling set_multi_pulse_signal_to_noise().</p>
+<p>Mathematically, a profile is just a function rho(phi) which gives the flux ‘rho’ as a function of pulse phase ‘phi’.
 The von Mises profile is the functional form:</p>
 <blockquote>
 <div>rho(phi) = exp[ -2 kappa sin(pi*phi)^2 ]</div></blockquote>
@@ -198,40 +195,48 @@ The von Mises profile is the functional form:</p>
 <dl class="attribute">
 <dt id="simpulse.von_mises_profile.duty_cycle">
 <code class="descname">duty_cycle</code><a class="headerlink" href="#simpulse.von_mises_profile.duty_cycle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Duty cycle of the pulsar, specified at construction, and defined as D = (pulse FWHM) / (pulse period).</p>
+<dd><p>Duty cycle of the pulsar, defined as D = (pulse FWHM) / (pulse period).</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="simpulse.von_mises_profile.eval_integrated_sample_slow">
-<code class="descname">eval_integrated_sample_slow</code><span class="sig-paren">(</span><em>phi0</em>, <em>phi1</em>, <em>amplitude=1.0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.eval_integrated_sample_slow" title="Permalink to this definition">¶</a></dt>
+<code class="descname">eval_integrated_sample_slow</code><span class="sig-paren">(</span><em>phi0</em>, <em>phi1</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.eval_integrated_sample_slow" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is intended for debugging (hence the “_slow”!)
 Returns the average flux over phase (not time) interval [phi0, phi1].</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="simpulse.von_mises_profile.eval_integrated_samples">
-<code class="descname">eval_integrated_samples</code><span class="sig-paren">(</span><em>t0</em>, <em>t1</em>, <em>nt</em>, <em>phase_model</em>, <em>amplitude=1.0) -&gt; (1D array</em><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.von_mises_profile.eval_integrated_samples" title="Permalink to this definition">¶</a></dt>
+<code class="descname">eval_integrated_samples</code><span class="sig-paren">(</span><em>t0</em>, <em>t1</em>, <em>nt</em>, <em>phase_model) -&gt; (1D array</em><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.von_mises_profile.eval_integrated_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method can be used to simulate a pulsar in a regularly spaced sequence of time samples.</p>
-<p>The ‘t0’ argument should be the _beginning_ of the first time sample, and ‘t1’ should be the _end_
-of the last time sample.  Thus, t1=t0+nt*dt, where dt is the length of a sample (not t1=t0+(nt-1)*dt).</p>
-<p>The ‘phase_model’ argument should be an object of type ‘simpulse.phase_model_base’.</p>
-<p>The output is a 1D array of length ‘nsamples’, containing simulated flux values.  Note that each
+<blockquote>
+<div><ul class="simple">
+<li>The ‘t0’ argument should be the <em>beginning</em> of the first time sample, and ‘t1’ should be the <em>end</em>
+of the last time sample.  Thus, t1=t0+nt*dt, where dt is the length of a sample (not t1=t0+(nt-1)*dt).</li>
+<li>The ‘phase_model’ argument should be an object of type ‘simpulse.phase_model_base’.</li>
+<li>The output is a 1D array of length ‘nsamples’, containing simulated flux values.  Note that each
 flux value is obtained by averaging (in time) the profile over the time sample, not instantanously
-sampling at the midpoint.</p>
+sampling at the midpoint.</li>
+</ul>
+</div></blockquote>
 <p>Reminder: if the ‘detrend’ flag was specified at construction, then the simulated flux will be detrended.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="simpulse.von_mises_profile.get_multi_pulse_signal_to_noise">
-<code class="descname">get_multi_pulse_signal_to_noise</code><span class="sig-paren">(</span><em>total_time</em>, <em>dt_sample</em>, <em>pulse_freq</em>, <em>sample_rms</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.get_multi_pulse_signal_to_noise" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_multi_pulse_signal_to_noise</code><span class="sig-paren">(</span><em>total_time</em>, <em>dt_sample</em>, <em>pulse_freq</em>, <em>sample_rms=1.0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.get_multi_pulse_signal_to_noise" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the total SNR of a train of pulses, accounting for finite time resolution (and detrending,
-if detrend=True was specified at construction), and assuming amplitude=1.</p>
+if detrend=True was specified at construction).</p>
 <p>Strictly speaking, this is an approximation to the true SNR, which may slightly depend
 on the exact arrival times of the pulses.</p>
-<p>The ‘total_time’ argument is the total duration of the pulse train.</p>
-<p>The ‘dt_sample’ argument is the length of each time sample.</p>
-<p>The ‘pulse_freq’ argument is the pulse frequency.
-The ‘sample_rms’ argument is the RMS noise fluctuation in each time sample.</p>
+<blockquote>
+<div><ul class="simple">
+<li>The ‘total_time’ argument is the total duration of the pulse train.</li>
+<li>The ‘dt_sample’ argument is the length of each time sample.</li>
+<li>The ‘pulse_freq’ argument is the pulse frequency.</li>
+<li>The ‘sample_rms’ argument is the RMS noise fluctuation in each time sample.</li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -249,14 +254,18 @@ is larger than this, then the returned array is zero-padded.</p>
 
 <dl class="method">
 <dt id="simpulse.von_mises_profile.get_single_pulse_signal_to_noise">
-<code class="descname">get_single_pulse_signal_to_noise</code><span class="sig-paren">(</span><em>dt_sample</em>, <em>pulse_freq</em>, <em>sample_rms</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.get_single_pulse_signal_to_noise" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_single_pulse_signal_to_noise</code><span class="sig-paren">(</span><em>dt_sample</em>, <em>pulse_freq</em>, <em>sample_rms=1.0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.get_single_pulse_signal_to_noise" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the SNR of a single pulse, accounting for finite time resolution (and detrending,
-if detrend=True was specified at construction), and assuming amplitude=1.</p>
+if detrend=True was specified at construction).</p>
 <p>Strictly speaking, the return value is an approximation to the true SNR, which may slightly depend
 on the exact arrival time of the pulse.</p>
-<p>The ‘dt_sample’ argument is the length of each time sample.</p>
-<p>The ‘pulse_freq’ argument is the pulse frequency.
-The ‘sample_rms’ argument is the RMS noise fluctuation in each time sample.</p>
+<blockquote>
+<div><ul class="simple">
+<li>The ‘dt_sample’ argument is the length of each time sample.</li>
+<li>The ‘pulse_freq’ argument is the pulse frequency.</li>
+<li>The ‘sample_rms’ argument is the RMS noise fluctuation in each time sample.</li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="attribute">
@@ -268,14 +277,34 @@ The ‘sample_rms’ argument is the RMS noise fluctuation in each time sample.<
 <dl class="attribute">
 <dt id="simpulse.von_mises_profile.mean_flux">
 <code class="descname">mean_flux</code><a class="headerlink" href="#simpulse.von_mises_profile.mean_flux" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mean flux of the pulse, in its default normalization where the peak flux is 1.</p>
+<dd><p>Mean flux of the pulse (settable property).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.von_mises_profile.peak_flux">
+<code class="descname">peak_flux</code><a class="headerlink" href="#simpulse.von_mises_profile.peak_flux" title="Permalink to this definition">¶</a></dt>
+<dd><p>Peak flux of the pulse (settable property).</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="simpulse.von_mises_profile.point_eval">
-<code class="descname">point_eval</code><span class="sig-paren">(</span><em>phi</em>, <em>amplitude=1.0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.point_eval" title="Permalink to this definition">¶</a></dt>
+<code class="descname">point_eval</code><span class="sig-paren">(</span><em>phi</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.point_eval" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the instantaneous flux evaluated at pulse phase ‘phi’.
 Reminder: if the ‘detrend’ flag was specified at construction, then the simulated flux will be detrended.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.von_mises_profile.set_multi_pulse_signal_to_noise">
+<code class="descname">set_multi_pulse_signal_to_noise</code><span class="sig-paren">(</span><em>snr</em>, <em>total_time</em>, <em>dt_sample</em>, <em>pulse_freq</em>, <em>sample_rms=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.von_mises_profile.set_multi_pulse_signal_to_noise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the pulse normalization to give the specified multi-pulse signal-to-noise ratio.
+For more information and description of the arguments, see the get_multi_pulse_signal_to_noise() docstring.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.von_mises_profile.set_single_pulse_signal_to_noise">
+<code class="descname">set_single_pulse_signal_to_noise</code><span class="sig-paren">(</span><em>snr</em>, <em>dt_sample</em>, <em>pulse_freq</em>, <em>sample_rms=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.von_mises_profile.set_single_pulse_signal_to_noise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the pulse normalization to give the specified single-pulse signal-to-noise ratio.
+For more information and description of the arguments, see the get_single_pulse_signal_to_noise() docstring.</p>
 </dd></dl>
 
 </dd></dl>

@@ -30,6 +30,7 @@ autodoc_default_flags = [ 'inherited-members' ]
 
 html_show_copyright = False
 html_show_sphinx = False
+html_show_sourcelink = False
 
 
 # -- General configuration ------------------------------------------------
