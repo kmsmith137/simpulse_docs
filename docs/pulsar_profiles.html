@@ -88,6 +88,7 @@
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kmsmith137/simpulse/tree/cmake_pybind11">Browse source code</a></li>
 </ul>
 
             
@@ -154,6 +155,8 @@
             
   <div class="section" id="pulsar-profiles-and-simulating-pulsars">
 <h1>Pulsar profiles, and simulating pulsars<a class="headerlink" href="#pulsar-profiles-and-simulating-pulsars" title="Permalink to this headline">¶</a></h1>
+<p><em>Note that the documentation is for the cmake_pybind11 branch of simpulse, not the master branch!</em>
+The cmake_pybind11 simpulse branch will be merged to master soon.</p>
 <dl class="class">
 <dt id="simpulse.von_mises_profile">
 <em class="property">class </em><code class="descclassname">simpulse.</code><code class="descname">von_mises_profile</code><a class="headerlink" href="#simpulse.von_mises_profile" title="Permalink to this definition">¶</a></dt>
@@ -161,7 +164,8 @@
 periodic profile implemented in simpulse, although in the future we might implement more profiles
 and define a ‘pulsar_profile’ base class.)</p>
 <p>Constructor syntax:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">von_mises_profile</span><span class="p">(</span><span class="n">duty_cycle</span><span class="p">,</span> <span class="n">detrend</span><span class="p">,</span> <span class="n">min_internal_nphi</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">von_mises_profile</span><span class="p">(</span><span class="n">duty_cycle</span><span class="p">,</span> <span class="n">detrend</span><span class="p">,</span> <span class="n">min_internal_nphi</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                               <span class="n">internal_phi_block_size</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>where:</p>
@@ -172,7 +176,11 @@ A reasonable choice is D = 0.1 or so.</li>
 <li>If the boolean variable ‘detrend’ is true, then the mean will be subtracted from the profile.</li>
 <li>It is unlikely that you’ll need to set the ‘min_internal_nphi’ constructor argument, which
 changes the number of phase bins used internally to represent the pulse.  If set to zero, then
-a reasonable default value will be chosen.</li>
+a reasonable default value will be chosen.  (The default suffices to simulate the pulsar to ~1%
+accuracy or better.)</li>
+<li>It is unlikely that you’ll need to set the ‘internal_phi_block_size’ argument, which determines
+the block size for calls to phase_model_base.eval_phi_sequence().  If set to zero, then a
+reasonable default value will be chosen.</li>
 </ul>
 </div></blockquote>
 <p>In order to simulate a pulsar, you need two things: a phase model and a pulse profile.  Then, to do
@@ -196,6 +204,13 @@ The von Mises profile is the functional form:</p>
 <dt id="simpulse.von_mises_profile.duty_cycle">
 <code class="descname">duty_cycle</code><a class="headerlink" href="#simpulse.von_mises_profile.duty_cycle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Duty cycle of the pulsar, defined as D = (pulse FWHM) / (pulse period).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.von_mises_profile.eval_instantaneous">
+<code class="descname">eval_instantaneous</code><span class="sig-paren">(</span><em>phi</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.eval_instantaneous" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the instantaneous flux evaluated at pulse phase ‘phi’.
+Reminder: if the ‘detrend’ flag was specified at construction, then the simulated flux will be detrended.</p>
 </dd></dl>
 
 <dl class="method">
@@ -250,6 +265,8 @@ on the exact arrival times of the pulses.</p>
 <p>The return value is a 1D array of length ‘nout’.  If nout=0 (the default), then it defaults to
 (internal_nphi/2+1), the number of Fourier coefficients which are computed internally.  (If ‘nout’
 is larger than this, then the returned array is zero-padded.</p>
+<p>The returned FFT does not include a time-sample window function.  You may want to multiply the
+output by j_0(pi*dphi/2), where dphi = (pulse_freq * dt_sample).</p>
 </dd></dl>
 
 <dl class="method">
@@ -275,22 +292,29 @@ on the exact arrival time of the pulse.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="simpulse.von_mises_profile.internal_phi_block_size">
+<code class="descname">internal_phi_block_size</code><a class="headerlink" href="#simpulse.von_mises_profile.internal_phi_block_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Block size used internally, in calls to phase_model_base.eval_phi_sequqnece().</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.von_mises_profile.kappa">
+<code class="descname">kappa</code><a class="headerlink" href="#simpulse.von_mises_profile.kappa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameter appearing in von Mises profile: rho(phi) = exp(-2 kappa sin(pi*phi)^2)</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="simpulse.von_mises_profile.mean_flux">
 <code class="descname">mean_flux</code><a class="headerlink" href="#simpulse.von_mises_profile.mean_flux" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mean flux of the pulse (settable property).</p>
+<p>Note: we define the mean flux with no detrending correction applied (even if the ‘detrend’ flag is True)</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="simpulse.von_mises_profile.peak_flux">
 <code class="descname">peak_flux</code><a class="headerlink" href="#simpulse.von_mises_profile.peak_flux" title="Permalink to this definition">¶</a></dt>
 <dd><p>Peak flux of the pulse (settable property).</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="simpulse.von_mises_profile.point_eval">
-<code class="descname">point_eval</code><span class="sig-paren">(</span><em>phi</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.von_mises_profile.point_eval" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the instantaneous flux evaluated at pulse phase ‘phi’.
-Reminder: if the ‘detrend’ flag was specified at construction, then the simulated flux will be detrended.</p>
+<p>Note: we define the peak flux with no detrending correction applied (even if the ‘detrend’ flag is True)</p>
 </dd></dl>
 
 <dl class="method">

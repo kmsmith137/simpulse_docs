@@ -47,6 +47,8 @@ if not os.path.exists('../simpulse'):
 f = '../simpulse/examples/python/01-simulating-frb.py'
 if not os.path.exists(f):
     print >>sys.stderr, "run-sphinx.py: directory ../simpulse exists, but not", f
+    print >>sys.stderr, "This probably means that ../simpulse is on the 'master' branch, whereas the sphinx documentation only works on the 'cmake_pybind11' branch."
+    print >>sys.stderr, "The cmake_pybind11 simpulse branch will be merged to master soon!"
     sys.exit(1)
 
 for f in [ "sphinx/index.rst", "docs/index.html" ]:

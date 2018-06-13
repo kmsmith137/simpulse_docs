@@ -86,6 +86,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kmsmith137/simpulse/tree/cmake_pybind11">Browse source code</a></li>
 </ul>
 
             
@@ -150,6 +151,8 @@
             
   <div class="section" id="introduction-and-installation">
 <h1>Introduction and Installation<a class="headerlink" href="#introduction-and-installation" title="Permalink to this headline">¶</a></h1>
+<p><em>Note that the documentation is for the cmake_pybind11 branch of simpulse, not the master branch!</em>
+The cmake_pybind11 simpulse branch will be merged to master soon.</p>
 <p>simpulse is a C++/python library for simulating FRB’s and pulsars.</p>
 <p>It is not designed for speed, but simulates pulses very accurately, keeping track of
 effects such as dispersion smearing within frequency channels, or finite time sampling artifacts.</p>
@@ -217,7 +220,8 @@ cd simpulse
 mkdir build
 cd build
 cmake -DCMAKE_INSTALL_PREFIX=$HOME ..
-make -j4    # -j4 uses four threads and is optional
+make -j4     # -j4 uses four threads (optional)
+make check   # run unit tests (optional)
 make install
 </pre></div>
 </div>
@@ -233,17 +237,21 @@ cmake, where you create a separate <code class="docutils literal"><span class="p
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build</span>
 <span class="n">make</span> <span class="o">-</span><span class="n">j4</span>       <span class="c1"># build everything (-j4 uses four threads and is optional)</span>
 <span class="n">make</span> <span class="n">install</span>   <span class="c1"># install libraries to $HOME/lib, headers to $HOME/include, etc.</span>
+<span class="n">make</span> <span class="n">check</span>     <span class="c1"># run unit tests</span>
 <span class="n">make</span> <span class="n">uninstall</span> <span class="c1"># undo &#39;make install&#39;: delete simpulse libraries from $HOME/lib, etc.</span>
 <span class="n">make</span> <span class="n">clean</span>     <span class="c1"># delete all build products, but don&#39;t undo &#39;make install&#39;</span>
 </pre></div>
 </div>
 <p>However, note that these <cite>make</cite> invocations <em>will only work in the build directory where you originally ran cmake</em>.</p>
+<p>So, whenever you want to recompile, you’ll need to switch back to the ‘build’ directory.
+Otherwise you will get the error: <code class="docutils literal"><span class="pre">make:</span> <span class="pre">***</span> <span class="pre">No</span> <span class="pre">targets</span> <span class="pre">specified</span> <span class="pre">and</span> <span class="pre">no</span> <span class="pre">makefile</span> <span class="pre">found</span></code></p>
 </li>
 <li><p class="first">I usually run cmake with <code class="docutils literal"><span class="pre">-DCMAKE_INSTALL_PREFIX=$HOME</span></code>.
 Then <cite>make install</cite> will install simpulse libraries in $HOME/lib, headers in $HOME/include, etc.
 This can be changed if you want to install simpulse elsewhere.  By default, cmake installs to /usr/local.</p>
 </li>
-<li><p class="first">Here are some more influential cmake variables, which can be set with <code class="docutils literal"><span class="pre">cmake</span> <span class="pre">-DVAR=VALUE</span></code>:</p>
+<li><p class="first">Here are some more influential cmake variables, which can be set with <code class="docutils literal"><span class="pre">cmake</span> <span class="pre">-DVAR=VALUE</span></code>.
+These might be useful if cmake is failing to find an external prerequisite:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>CMAKE_CXX_FLAGS: compiler flags
 CMAKE_MODULE_PATH: look for cmake modules (ending in .cmake) in this directory
 CMAKE_INCLUDE_PATH: look for header files in this directory
@@ -252,6 +260,8 @@ CMAKE_PREFIX_PATH: look for libraries in ${CMAKE_PREFIX_PATH}/lib,
                    header files in ${CMAKE_PREFIX_PATH}/include, etc.
 </pre></div>
 </div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">make</span> <span class="pre">VERBOSE=1</span></code> is generally useful for diagnosing build problems.</p>
 </li>
 <li><p class="first">Let me know if you have any trouble with cmake.  I am still getting used to it, so there may
 be bugs in the build scripts, or room for improvement.</p>

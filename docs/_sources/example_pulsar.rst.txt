@@ -1,6 +1,11 @@
 Example 2: simulating a pulsar
 ==============================
 
+*Note that the documentation is for the cmake_pybind11 branch of simpulse, not the master branch!*
+The cmake_pybind11 simpulse branch will be merged to master soon.
+
+Note: before running the example scripts, you will need to do ``make install`` in the build directory (``make`` is not enough).
+
 The solid blue curve below shows the "phase model" of a pulsar.  By definition, this is a function Phi(t)
 which takes integer values when the observed pulse flux is maximized.  Therefore, pulses occur when the red 
 dotted lines (which correspond to integer y-values) intersect the blue curve.
@@ -23,7 +28,7 @@ the midpoint of each sample.
    :width: 800px
    :height: 600px
 
-Here is the script to create these plots (simpulse/examples/python/02-simulating-pulsar.py):
+Here is the script to create these plots (simpulse/examples/python/02-simulating-pulsar.py).
 
 .. literalinclude:: ../../simpulse/examples/python/02-simulating-pulsar.py
     :language: python

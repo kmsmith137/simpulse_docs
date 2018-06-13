@@ -1,6 +1,9 @@
 Introduction and Installation
 =============================
 
+*Note that the documentation is for the cmake_pybind11 branch of simpulse, not the master branch!*
+The cmake_pybind11 simpulse branch will be merged to master soon.
+
 simpulse is a C++/python library for simulating FRB's and pulsars.  
 
 It is not designed for speed, but simulates pulses very accurately, keeping track of 
@@ -69,7 +72,8 @@ Quick-and-dirty instructions::
   mkdir build
   cd build
   cmake -DCMAKE_INSTALL_PREFIX=$HOME ..
-  make -j4    # -j4 uses four threads and is optional
+  make -j4     # -j4 uses four threads (optional)
+  make check   # run unit tests (optional)
   make install
 
 In a little more detail:
@@ -85,16 +89,21 @@ In a little more detail:
       cd build
       make -j4       # build everything (-j4 uses four threads and is optional)
       make install   # install libraries to $HOME/lib, headers to $HOME/include, etc.
+      make check     # run unit tests
       make uninstall # undo 'make install': delete simpulse libraries from $HOME/lib, etc.
       make clean     # delete all build products, but don't undo 'make install'
 
     However, note that these `make` invocations *will only work in the build directory where you originally ran cmake*.
 
+    So, whenever you want to recompile, you'll need to switch back to the 'build' directory.
+    Otherwise you will get the error: ``make: *** No targets specified and no makefile found``
+
   - I usually run cmake with ``-DCMAKE_INSTALL_PREFIX=$HOME``.
     Then `make install` will install simpulse libraries in $HOME/lib, headers in $HOME/include, etc.
     This can be changed if you want to install simpulse elsewhere.  By default, cmake installs to /usr/local.
 
-  - Here are some more influential cmake variables, which can be set with ``cmake -DVAR=VALUE``::
+  - Here are some more influential cmake variables, which can be set with ``cmake -DVAR=VALUE``.
+    These might be useful if cmake is failing to find an external prerequisite::
 
 
       CMAKE_CXX_FLAGS: compiler flags
@@ -103,6 +112,8 @@ In a little more detail:
       CMAKE_LIBRARY_PATH: look for libraries in this directory
       CMAKE_PREFIX_PATH: look for libraries in ${CMAKE_PREFIX_PATH}/lib,
                          header files in ${CMAKE_PREFIX_PATH}/include, etc.
+
+  - ``make VERBOSE=1`` is generally useful for diagnosing build problems.
 
   - Let me know if you have any trouble with cmake.  I am still getting used to it, so there may
     be bugs in the build scripts, or room for improvement.
