@@ -108,3 +108,17 @@ if simpulse_dir != '../simpulse/build':
     print
     print "*** WARNING: the simpulse module was imported from directory '%s', not its preferred location ../simpulse/build" % (simpulse_dir)
 
+
+# Traverse 'docs' directory looking for missing .nojekyll files.
+# My understanding is that every directory which contains subdirectories must contain .nojekyll.
+
+dirs_already_checked = set([''])
+
+def check_nojekyll(opaque_arg, dirname, fnames):
+    parent = os.path.dirname(dirname)
+    if parent not in dirs_already_checked:
+        if not os.path.exists(os.path.join(parent, '.nojekyll')):
+            print "*** WARNING: directory '%s' does not contain the .nojekyll file (required by Github Pages)" % parent
+        dirs_already_checked.add(parent)
+
+os.path.walk('docs', check_nojekyll, None)
