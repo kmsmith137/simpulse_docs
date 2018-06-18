@@ -30,8 +30,27 @@ import sys
 # Sanity checks
 
 
-# Check that we can import simpulse first (for docstring scraping)
+# Prefer to import from ../simpulse/build if possible.
+# Note: should be kept in sync with corresponding line in sphinx/conf.py.
+sys.path = ['../simpulse/build'] + sys.path
+
+# Import simpulse (for docstring scraping).
+# Importing simpulse_pybind11 is only necessary for the directory sanity check below.
 import simpulse
+import simpulse_pybind11
+
+assert len(simpulse.__path__) == 1
+assert os.path.basename(simpulse.__path__[0]) == 'simpulse'
+assert os.path.basename(simpulse_pybind11.__file__).startswith('simpulse_pybind11.')
+
+simpulse_dir = os.path.dirname(simpulse.__path__[0])
+simpulse_pybind11_dir = os.path.dirname(simpulse_pybind11.__file__)
+
+# Directory sanity check.
+# Note that if simpulse_dir != '../simpulse/build', then an additional warning will be emitted at the end (see below).
+if simpulse_dir != simpulse_pybind11_dir:
+    print >>sys.stderr, "run-sphinx.py: 'simpulse' module was imported from different directory (%s) from 'simpulse_pybind11' module (%s)" % (simpulse_dir, simpulse_pybind11_dir)
+    sys.exit(1)
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -84,4 +103,8 @@ print 'A local copy of the documentation has been built successfully!'
 print 'To view it, point your web browser here:'
 print
 print '    file://%s' % os.path.join(os.getcwd(), 'docs/index.html')
+
+if simpulse_dir != '../simpulse/build':
+    print
+    print "*** WARNING: the simpulse module was imported from directory '%s', not its preferred location ../simpulse/build" % (simpulse_dir)
 

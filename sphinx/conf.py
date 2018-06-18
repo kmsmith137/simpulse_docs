@@ -22,6 +22,12 @@
 
 # Reference: http://www.sphinx-doc.org/en/master/ext/autodoc.html
 
+import os
+import sys
+
+# Note: should be kept in sync with corresponding line in ../run-sphinx.py
+sys.path.insert(0, os.path.abspath('../../simpulse/build'))
+
 # !!! Important: without this, 'autoclass' behaves counterintuitively !!!
 autoclass_content = 'both'
 
