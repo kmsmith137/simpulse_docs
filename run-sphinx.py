@@ -72,7 +72,7 @@ if not os.path.exists(f):
 
 for f in [ "sphinx/index.rst", "docs/index.html" ]:
     if not os.path.exists(f):
-        print >>sys.stderr, "run-sphinx.py: file '%s' does not exist ?!"
+        print >>sys.stderr, "run-sphinx.py: file '%s' does not exist ?!" % f
         sys.exit(1)
 
 

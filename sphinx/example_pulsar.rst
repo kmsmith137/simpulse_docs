@@ -1,3 +1,5 @@
+.. _example_pulsar:
+
 Example 2: simulating a pulsar
 ==============================
 

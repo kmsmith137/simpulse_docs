@@ -69,6 +69,7 @@ Quick-and-dirty instructions::
 
   git clone https://github.com/kmsmith137/simpulse
   cd simpulse
+  git checkout cmake_pybind11  # see above!!
   mkdir build
   cd build
   cmake -DCMAKE_INSTALL_PREFIX=$HOME ..

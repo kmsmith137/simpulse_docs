@@ -1,3 +1,5 @@
+.. _example_frb:
+
 Example 1: simulating an FRB
 ============================
 
