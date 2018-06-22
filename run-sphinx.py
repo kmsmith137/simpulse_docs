@@ -94,6 +94,16 @@ def xsystem(cmd, show=True):
 
 xsystem("sphinx-build -E -b html sphinx docs")
 
+# The only thing I don't like about the RTD Sphinx theme is that it doesn't put any
+# spacing between bullet points in unordered lists.  I got carried away and wrote
+# this code to hack the Sphinx-generated CSS!
+
+with open('docs/_static/css/theme.css', 'a') as f:
+    maxdepth = 9
+    print >>f, "ul li { margin: 10px 0; }"
+    for d in xrange(1, maxdepth+1):
+        print >>f, "li.toctree-l%d { margin: 0 0; }" % d
+
 print
 print "The documentation uses docstrings obtained by importing the 'simpulse' python module."
 print "If this is not up-to-date, the documentation will also be out of date.  In this case,"
@@ -115,6 +125,8 @@ if simpulse_dir != '../simpulse/build':
 dirs_already_checked = set([''])
 
 def check_nojekyll(opaque_arg, dirname, fnames):
+    if dirname.startswith('docs/.doctrees') or dirname.startswith('docs/.buildinfo'):
+        return
     parent = os.path.dirname(dirname)
     if parent not in dirs_already_checked:
         if not os.path.exists(os.path.join(parent, '.nojekyll')):
