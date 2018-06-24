@@ -1,0 +1,405 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Example 3: python phase model &mdash; simpulse  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API reference" href="api_reference.html" />
+    <link rel="prev" title="Example 2: simulating a pulsar" href="example_pulsar.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> simpulse
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction and Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="examples.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="example_frb.html">Example 1: simulating an FRB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_pulsar.html">Example 2: simulating a pulsar</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example 3: python phase model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kmsmith137/simpulse/tree/cmake_pybind11">Browse source code</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">simpulse</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="examples.html">Examples</a> &raquo;</li>
+        
+      <li>Example 3: python phase model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="example-3-python-phase-model">
+<h1>Example 3: python phase model<a class="headerlink" href="#example-3-python-phase-model" title="Permalink to this headline">¶</a></h1>
+<p><em>Note that the documentation is for the cmake_pybind11 branch of simpulse, not the master branch!</em>
+The cmake_pybind11 simpulse branch will be merged to master soon.</p>
+<p>Note: before running the example scripts, you will need to do <code class="docutils literal"><span class="pre">make</span> <span class="pre">install</span></code> in the build directory (<code class="docutils literal"><span class="pre">make</span></code> is not enough).</p>
+<p>This example shows how to define a new pulsar phase model in python, by subclassing
+‘class simpulse.phase_model_base’.  We implement a toy example: a five-parameter
+“sinusoidal” phase model in which the pulse frequency is a sinusoidal function of time.</p>
+<p>The plots below are similar to <a class="reference internal" href="example_pulsar.html#example-2-simulating-a-pulsar"><span class="std std-ref">Example 2: simulating a pulsar</span></a>: we show an example
+of the phase model phi(t), and the associated pulsar simulation.</p>
+<a class="reference internal image-reference" href="_images/example3_phase_model.png"><img alt="_images/example3_phase_model.png" src="_images/example3_phase_model.png" style="width: 800px; height: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/example3_pulses.png"><img alt="_images/example3_pulses.png" src="_images/example3_pulses.png" style="width: 800px; height: 600px;" /></a>
+<p>Here is the script (simpulse/examples/python/03-python-phase-model.py).</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#</span>
+<span class="c1"># This example shows how to define a new pulsar phase model in python, by subclassing</span>
+<span class="c1"># &#39;class simpulse.phase_model_base&#39;.</span>
+<span class="c1">#</span>
+<span class="c1"># We implement a toy example: a five-parameter &quot;sinusoidal&quot; phase model in which the </span>
+<span class="c1"># pulse frequency is a sinusoidal function of time.  For more info, see the &#39;class</span>
+<span class="c1"># sinusoidal_phase_model&#39; docstring below.</span>
+<span class="c1">#</span>
+<span class="c1"># Note that simpulse is mostly written in C++, and in particular &#39;class phase_model_base&#39;</span>
+<span class="c1"># is a C++ class whose eval_phi() method is called from C++.  However, it is possible</span>
+<span class="c1"># to define a python subclass whose eval_phi() method is callable from either C++ or</span>
+<span class="c1"># python.  This is more convenient than defining a C++ subclass, but also slower!</span>
+<span class="c1">#</span>
+<span class="c1"># Similar to example 2, this script plots an example sinusoidal phase model, and a </span>
+<span class="c1"># simulation of the pulses.</span>
+
+
+<span class="kn">import</span> <span class="nn">simpulse</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+
+<span class="c1">############################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Definition of &#39;class sinusodial_phase_model&#39;.</span>
+
+
+<span class="k">class</span> <span class="nc">sinusoidal_phase_model</span><span class="p">(</span><span class="n">simpulse</span><span class="o">.</span><span class="n">phase_model_base</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A toy phase model in which the pulse frequency is a sinusoidal function of time.</span>
+<span class="sd">    (This resembles a binary pulsar, but doesn&#39;t have an eccentricity parameter, and</span>
+<span class="sd">    and is wrong at order v^2/c^2.)</span>
+
+<span class="sd">    Constructor syntax:</span>
+
+<span class="sd">      pm = sinusoidal_phase_model(pulse_phase, pulse_freq, orbital_phase, </span>
+<span class="sd">                                  orbital_freq, beta, t0)</span>
+
+<span class="sd">    where:</span>
+
+<span class="sd">      - pulse_phase is the phase phi(t0) at the reference time t0</span>
+
+<span class="sd">      - pulse_freq is the average pulse frequency phi&#39;(t)</span>
+
+<span class="sd">      - orbital_phase is the orbital phase at the reference time t0</span>
+<span class="sd">         (0 = maximum pulse frequency, 0.5 = minimum pulse frequency)</span>
+
+<span class="sd">      - orbital_freq is the orbital frequency</span>
+
+<span class="sd">      - beta is the max fractional deviation of the pulse frequency from</span>
+<span class="sd">        its average (i.e. beta=0.01 means that the instantaneous frequency</span>
+<span class="sd">        can be between 99% and 101% of the average)</span>
+
+<span class="sd">    In detail, the model is as follows.  The orbital phase theta(t) is:</span>
+<span class="sd">    </span>
+<span class="sd">      theta(t) = orbital_freq * (t-t0) + orbital_phase</span>
+
+<span class="sd">    The pulse frequency phi&#39;(t) is:</span>
+
+<span class="sd">      phi&#39;(t) = pulse_freq * (1 + beta cos(2 pi theta(t)))</span>
+
+<span class="sd">    The phase model phi(t) is the antiderivative:</span>
+
+<span class="sd">      phi(t) = pulse_phase + pulse_freq * (t-t0) </span>
+<span class="sd">                    + c (sin(2 pi theta(t)) - sin(2 pi orbital_phase))</span>
+
+<span class="sd">    where c = pulse_freq * beta / (2 pi orbital_freq).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pulse_phase</span><span class="p">,</span> <span class="n">pulse_freq</span><span class="p">,</span> <span class="n">orbital_phase</span><span class="p">,</span> <span class="n">orbital_freq</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">t0</span><span class="p">):</span>
+        <span class="n">simpulse</span><span class="o">.</span><span class="n">phase_model_base</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pulse_phase</span> <span class="o">=</span> <span class="n">pulse_phase</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pulse_freq</span> <span class="o">=</span> <span class="n">pulse_freq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orbital_phase</span> <span class="o">=</span> <span class="n">orbital_phase</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orbital_freq</span> <span class="o">=</span> <span class="n">orbital_freq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="n">t0</span>
+
+
+    <span class="c1"># A phase_model can be specified by defining the virtual function eval_phi(),</span>
+    <span class="c1"># which returns the phase phi(t) at a given time t.</span>
+    <span class="c1">#</span>
+    <span class="c1"># The &#39;nderivs&#39; argument can be used to compute the n-th derivative (d^n phi) / dt^n.</span>
+    <span class="c1"># Currently we don&#39;t actually use &#39;nderivs&#39; anywhere, and I may remove it from the </span>
+    <span class="c1"># simpulse API eventually!  In this example, it would be straightforward to compute </span>
+    <span class="c1"># derivatives of the phase model, but I didn&#39;t bother implementing this.</span>
+
+    <span class="k">def</span> <span class="nf">eval_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">nderivs</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">nderivs</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;sinusoidal_phase_model: nderivs &gt; 0 not implemented yet!&#39;</span>
+
+        <span class="n">t</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span>
+
+        <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbital_freq</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbital_phase</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pulse_freq</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">orbital_freq</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pulse_phase</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pulse_freq</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> 
+                <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">orbital_phase</span><span class="p">)))</span>
+
+
+    <span class="c1"># Optional: if eval_phi_sequence() is also defined, then simulating pulsars may be</span>
+    <span class="c1"># significantly faster.  This function should return a 1D array of length &#39;nsamples&#39;,</span>
+    <span class="c1"># containing phi(t) values sampled at an evenly spaced set of points between t0 and t1.</span>
+    <span class="c1">#</span>
+    <span class="c1"># If eval_phi_sequence() is not defined, then libsimpulse will emulate it, by calling</span>
+    <span class="c1"># eval_phi() in a loop (equivalent but possibly slower).</span>
+
+    <span class="k">def</span> <span class="nf">eval_phi_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">nsamples</span><span class="p">,</span> <span class="n">nderivs</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+        <span class="c1"># Our implementation of eval_phi() happens to be written in a way where the &#39;t&#39;</span>
+        <span class="c1"># argument can be either a scalar or an array.  Therefore, we can trivially</span>
+        <span class="c1"># implement eval_phi_sequence() as follows.</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">nsamples</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_phi</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">nderivs</span><span class="p">)</span>
+
+
+<span class="c1">############################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># The rest of the script is similar to example 2 (&quot;simulating a pulsar&quot;) and mostly</span>
+<span class="c1"># uncommented.  We construct a phase model and a pulse profile, plot the phase model,</span>
+<span class="c1"># then simulate and plot the pulses.</span>
+
+
+<span class="n">t0</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">nt</span> <span class="o">=</span> <span class="mi">1000</span>   <span class="c1"># high-resolution plot</span>
+
+
+<span class="n">phase_model</span> <span class="o">=</span> <span class="n">sinusoidal_phase_model</span><span class="p">(</span>
+    <span class="n">pulse_phase</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">pulse_freq</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">orbital_freq</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">orbital_phase</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>   <span class="c1"># unrealistic! (typical beta for a binary pulsar is ~10^{-4})</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="p">)</span>
+
+<span class="n">profile</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">von_mises_profile</span><span class="p">(</span><span class="n">duty_cycle</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">detrend</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+
+<span class="c1">##########  First plot: phase model phi(t)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">,</span><span class="mi">1000</span><span class="p">),</span> <span class="n">phase_model</span><span class="o">.</span><span class="n">eval_phi_sequence</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">,</span><span class="mi">1000</span><span class="p">),</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (seconds)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Pulse phase&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span>
+<span class="c1"># plt.savefig(&#39;example3_phase_model.png&#39;)   # write to file</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>                                <span class="c1"># display to screen</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+
+
+<span class="c1">##########  Second plot: pulsar simulation</span>
+
+<span class="n">tvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">nt</span><span class="p">)</span>
+<span class="n">rhovec</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">eval_integrated_samples</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">nt</span><span class="p">,</span> <span class="n">phase_model</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span> <span class="n">rhovec</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (seconds)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Flux&#39;</span><span class="p">)</span>
+<span class="c1"># plt.savefig(&#39;example3_pulses.png&#39;)   # write to file</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>                         <span class="c1"># display to screen</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api_reference.html" class="btn btn-neutral float-right" title="API reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="example_pulsar.html" class="btn btn-neutral" title="Example 2: simulating a pulsar" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

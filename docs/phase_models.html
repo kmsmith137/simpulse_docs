@@ -163,12 +163,16 @@ The cmake_pybind11 simpulse branch will be merged to master soon.</p>
 <em class="property">class </em><code class="descclassname">simpulse.</code><code class="descname">phase_model_base</code><a class="headerlink" href="#simpulse.phase_model_base" title="Permalink to this definition">¶</a></dt>
 <dd><p>This virtual base class represents a pulsar phase model Phi(t).  By definition, this is a function which takes
 integer values at times when pulses are observed.  The specific form of Phi(t) is determined by the subclass.</p>
-<p>Currently, only one subclass of phase_model_base is implemented: constant_acceleration_phase_model (see below).</p>
+<p>Currently, only one subclass is implemented: constant_acceleration_phase_model.</p>
+<p>It is possible to define subclasses from python.  A python subclass must define the eval_phi() method,
+and may optionally define eval_phi_sequence().  See <a class="reference internal" href="example_python_phase_model.html#example-3-python-phase-model"><span class="std std-ref">Example 3: python phase model</span></a> for an example.</p>
 <dl class="method">
 <dt id="simpulse.phase_model_base.eval_phi">
 <code class="descname">eval_phi</code><span class="sig-paren">(</span><em>t</em>, <em>nderivs=0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.phase_model_base.eval_phi" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the phase model Phi(t) at a single time ‘t’.
-Can be called with nderivs=0 to get Phi(t), or nderivs &gt; 0 to get derivatives (d/dt)^n Phi.</p>
+<dd><p>Evaluates the phase model Phi(t) at a single time ‘t’.</p>
+<p>The <code class="docutils literal"><span class="pre">nderivs</span></code> argument can be used to compute the n-th derivative (d^n phi) / dt^n.
+Currently we don’t actually use ‘nderivs’ anywhere, and I may remove it from the
+simpulse API eventually!</p>
 </dd></dl>
 
 <dl class="method">
@@ -202,8 +206,10 @@ is constant in time.  (Subclass of phase_model_base.)</p>
 <dl class="method">
 <dt id="simpulse.constant_acceleration_phase_model.eval_phi">
 <code class="descname">eval_phi</code><span class="sig-paren">(</span><em>t</em>, <em>nderivs=0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.constant_acceleration_phase_model.eval_phi" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the phase model Phi(t) at a single time ‘t’.
-Can be called with nderivs=0 to get Phi(t), or nderivs &gt; 0 to get derivatives (d/dt)^n Phi.</p>
+<dd><p>Evaluates the phase model Phi(t) at a single time ‘t’.</p>
+<p>The <code class="docutils literal"><span class="pre">nderivs</span></code> argument can be used to compute the n-th derivative (d^n phi) / dt^n.
+Currently we don’t actually use ‘nderivs’ anywhere, and I may remove it from the
+simpulse API eventually!</p>
 </dd></dl>
 
 <dl class="method">
