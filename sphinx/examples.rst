@@ -11,3 +11,4 @@ Note: before running the example scripts, you will need to do ``make install`` i
 
    example_frb
    example_pulsar
+   example_python_phase_model
