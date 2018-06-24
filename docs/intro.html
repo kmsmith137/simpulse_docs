@@ -167,8 +167,14 @@ are coming soon!</p>
 <ul class="simple">
 <li>a relatively recent C++ compiler</li>
 <li>python, numpy</li>
-<li>cmake</li>
 <li>matplotlib is not required, but recommended in order to run example scripts</li>
+</ul>
+</li>
+<li><p class="first">cmake</p>
+<ul class="simple">
+<li>Linux (Ubuntu): <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">cmake</span></code></li>
+<li>Linux (CentOS): <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">yum</span> <span class="pre">install</span> <span class="pre">cmake</span></code></li>
+<li>OSX: <code class="docutils literal"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">cmake</span></code></li>
 </ul>
 </li>
 <li><p class="first"><a class="reference external" href="https://github.com/pybind/pybind11">pybind11</a>, a C++ header-only library for C++/python interoperability.  I think
@@ -181,7 +187,7 @@ cd build
 # !!! The -DPYBIND11_PYTHON_VERSION=2.7 flag is important here !!!
 # This tells pybind11 that you will be using python 2 instead of python 3.
 
-cmake -DCMAKE_INSTALL_PREFIX=$HOME
+cmake -DCMAKE_INSTALL_PREFIX=$HOME -DPYBIND11_PYTHON_VERSION=2.7 ..
 make install
 </pre></div>
 </div>

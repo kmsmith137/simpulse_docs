@@ -247,12 +247,12 @@ the midpoint of each sample.</p>
 <span class="c1"># simpulse, we do it differently, by calling the functions:</span>
 <span class="c1">#</span>
 <span class="c1">#   phase_model.eval_phi(t) -&gt; evaluate instantaneous phase at time t</span>
-<span class="c1">#   profile.point_eval(phi) -&gt; evaluate instantaneous pulsar flux at phase phi</span>
+<span class="c1">#   profile.eval_instantaneous(phi) -&gt; evaluate instantaneous pulsar flux at phase phi</span>
 
 <span class="n">nt_fine</span> <span class="o">=</span> <span class="mi">2048</span>
 <span class="n">t_fine</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">nt_fine</span><span class="p">)</span>
 <span class="n">phi_fine</span> <span class="o">=</span> <span class="p">[</span> <span class="n">phase_model</span><span class="o">.</span><span class="n">eval_phi</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">t_fine</span> <span class="p">]</span>
-<span class="n">rho_fine</span> <span class="o">=</span> <span class="p">[</span> <span class="n">profile</span><span class="o">.</span><span class="n">point_eval</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="k">for</span> <span class="n">phi</span> <span class="ow">in</span> <span class="n">phi_fine</span> <span class="p">]</span>
+<span class="n">rho_fine</span> <span class="o">=</span> <span class="p">[</span> <span class="n">profile</span><span class="o">.</span><span class="n">eval_instantaneous</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="k">for</span> <span class="n">phi</span> <span class="ow">in</span> <span class="n">phi_fine</span> <span class="p">]</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_fine</span><span class="p">,</span> <span class="n">rho_fine</span><span class="p">,</span> <span class="s1">&#39;r:&#39;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time (seconds)&#39;</span><span class="p">)</span>

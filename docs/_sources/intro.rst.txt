@@ -22,9 +22,15 @@ Prerequisites
 
     - python, numpy
 
-    - cmake
-
     - matplotlib is not required, but recommended in order to run example scripts
+
+  - cmake
+
+    - Linux (Ubuntu): ``sudo apt-get install cmake``
+
+    - Linux (CentOS): ``sudo yum install cmake``
+
+    - OSX: ``brew install cmake``
 
   - pybind11_, a C++ header-only library for C++/python interoperability.  I think
     the only option here is to build from source.  The following worked for me::
@@ -37,7 +43,7 @@ Prerequisites
          # !!! The -DPYBIND11_PYTHON_VERSION=2.7 flag is important here !!!
 	 # This tells pybind11 that you will be using python 2 instead of python 3.
 
-         cmake -DCMAKE_INSTALL_PREFIX=$HOME 
+         cmake -DCMAKE_INSTALL_PREFIX=$HOME -DPYBIND11_PYTHON_VERSION=2.7 ..
          make install
 
 

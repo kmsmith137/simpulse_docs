@@ -202,10 +202,14 @@ The cmake_pybind11 simpulse branch will be merged to master soon.</p>
 <span class="n">p</span><span class="o">.</span><span class="n">add_to_timestream</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">)</span>
 
 <span class="c1"># Make the plot.  Some matplotlib trivia here:</span>
+<span class="c1">#</span>
 <span class="c1">#   - interpolation=&#39;none&#39; to disable interpolation (watch out: not the same as </span>
 <span class="c1">#       interpolation=None, which uses &quot;default&quot; interpolation!)</span>
+<span class="c1">#</span>
 <span class="c1">#   - extent=(left,right,bottom,top) defines the ranges on the xy-axes</span>
+<span class="c1">#</span>
 <span class="c1">#   - if you use &#39;extent&#39;, you probably also want aspect=&#39;auto&#39;</span>
+<span class="c1">#</span>
 <span class="c1">#   - origin=&#39;lower&#39; puts frequency index 0 on bottom of the plot</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span>
