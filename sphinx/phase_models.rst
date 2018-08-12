@@ -12,3 +12,5 @@ For example code to simulate a pulsar, see :ref:`example_pulsar`.
 .. autoclass:: simpulse.constant_acceleration_phase_model
     :members:
 
+.. autoclass:: simpulse.keplerian_binary_phase_model
+    :members:

@@ -248,6 +248,47 @@ evaluated at t = ((nsamples-i-1)*t0 + i*t1) / (nsamples-1).</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="simpulse.keplerian_binary_phase_model">
+<em class="property">class </em><code class="descclassname">simpulse.</code><code class="descname">keplerian_binary_phase_model</code><a class="headerlink" href="#simpulse.keplerian_binary_phase_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents a binary pulsar with relativistic effects neglected
+(Subclass of phase_model_base.)</p>
+<p>Constructor syntax:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pm</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">keplerian_binary_phase_model</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">Prob</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">phi0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where:</p>
+<blockquote>
+<div><p>e = eccentricity</p>
+<p>a = semimajor axis</p>
+<p>b = semiminor axis (note: e = sqrt(1 - b^2 / a^2) )</p>
+<p>Porb = orbital period</p>
+<p>nx, ny = unit vector in the direction of Earth</p>
+<p>P = pulse period</p>
+<p>t0 = time delay parameter between Earth and binary center of mass (mod Porb)</p>
+<p>phi0 = initial phase (mod 1)</p>
+</div></blockquote>
+<dl class="method">
+<dt id="simpulse.keplerian_binary_phase_model.eval_phi">
+<code class="descname">eval_phi</code><span class="sig-paren">(</span><em>t</em>, <em>nderivs=0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.keplerian_binary_phase_model.eval_phi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the phase model Phi(t) at a single time ‘t’.</p>
+<p>The <code class="docutils literal"><span class="pre">nderivs</span></code> argument can be used to compute the n-th derivative (d^n phi) / dt^n.
+Currently we don’t actually use ‘nderivs’ anywhere, and I may remove it from the
+simpulse API eventually!</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.keplerian_binary_phase_model.eval_phi_sequence">
+<code class="descname">eval_phi_sequence</code><span class="sig-paren">(</span><em>t0</em>, <em>t1</em>, <em>nsamples</em>, <em>nderivs=0) -&gt; (1D array</em><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.keplerian_binary_phase_model.eval_phi_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the phase model at a sequence of equally spaced time samples.
+The ‘t0’ and ‘t1’ args are the starting/ending times of the sampled region.</p>
+<p>The return value is an array of length ‘nsamples’, whose i-th entry is the phase model Phi(t)
+evaluated at t = ((nsamples-i-1)*t0 + i*t1) / (nsamples-1).</p>
+<p>Can be called with nderivs=0 to get Phi(t), or nderivs &gt; 0 to get derivatives (d/dt)^n Phi.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
