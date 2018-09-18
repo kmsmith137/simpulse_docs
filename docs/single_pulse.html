@@ -188,9 +188,32 @@ It is sometimes called incrementally, as a stream of 2D arrays is generated.
 The ‘out’ arg is a 2d array with shape (nfreq, out_nt).</p>
 <p>The ‘t0’ and ‘t1’ args are the endpoints of the sampled region, in seconds relative
 to the same origin as the undispersed_arrival_time.</p>
-<p>By default, the frequencies are assumed ordered from lowest to highest.
-WARNING: this ordering is used throughout ‘simpulse’, but the opposite ordering is used in rf_pipelines and bonsai!!
-To get the opposite ordering (highest-to-lowest), set freq_hi_to_lo=True.</p>
+<p>The optional ‘freq_hi_to_lo’ flag indicates whether frequency channels are ordered from
+lowest to highest (the default), or ordered from highest to lowest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simpulse.single_pulse.compare_to_timestream">
+<code class="descname">compare_to_timestream</code><span class="sig-paren">(</span><em>d</em>, <em>w</em>, <em>t0</em>, <em>t1</em>, <em>freq_hi_to_lo=False) -&gt; (wsd</em>, <em>wss</em><span class="sig-paren">)</span><a class="headerlink" href="#simpulse.single_pulse.compare_to_timestream" title="Permalink to this definition">¶</a></dt>
+<dd><p>This utility function is intended for use in direct pulse fitters.</p>
+<p>The inputs are a 2-d data array d[ifreq,it] and a 2-d weights array w[ifreq,it].</p>
+<p>The outputs are 1-d arrays wsd[ifreq] and wss[ifreq], computed as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">wsd</span><span class="p">[</span><span class="n">ifreq</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_</span><span class="p">{</span><span class="n">it</span><span class="p">}</span> <span class="n">w</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span><span class="n">it</span><span class="p">]</span> <span class="n">s</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span><span class="n">it</span><span class="p">]</span> <span class="n">d</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span><span class="n">it</span><span class="p">]</span>
+<span class="n">wss</span><span class="p">[</span><span class="n">ifreq</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_</span><span class="p">{</span><span class="n">it</span><span class="p">}</span> <span class="n">w</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span><span class="n">it</span><span class="p">]</span> <span class="n">s</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span><span class="n">it</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>where s[ifreq,it] is the simulated pulse.</p>
+<p>Arguments:</p>
+<blockquote>
+<div><ul class="simple">
+<li>The ‘d’ and ‘w’ arguments are 2-d arrays with shape (nfreq, in_nt).</li>
+<li>The ‘t0’ and ‘t1’ args are the endpoints of the sampled region, in seconds relative
+to the undispersed_arrival_time.</li>
+<li>The optional ‘freq_hi_to_lo’ flag indicates whether frequency channels are ordered from
+lowest to highest (the default), or ordered from highest to lowest.</li>
+</ul>
+</div></blockquote>
+<p>The return value is a 2-tuple (wsd, wss), where wsd and wss are 1-d arrays of length nfreq.</p>
 </dd></dl>
 
 <dl class="attribute">

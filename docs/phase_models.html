@@ -268,6 +268,36 @@ evaluated at t = ((nsamples-i-1)*t0 + i*t1) / (nsamples-1).</p>
 <p>t0 = time delay parameter between Earth and binary center of mass (mod Porb)</p>
 <p>phi0 = initial phase (mod 1)</p>
 </div></blockquote>
+<dl class="attribute">
+<dt id="simpulse.keplerian_binary_phase_model.P">
+<code class="descname">P</code><a class="headerlink" href="#simpulse.keplerian_binary_phase_model.P" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pulse period</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.keplerian_binary_phase_model.Porb">
+<code class="descname">Porb</code><a class="headerlink" href="#simpulse.keplerian_binary_phase_model.Porb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Orbital period</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.keplerian_binary_phase_model.a">
+<code class="descname">a</code><a class="headerlink" href="#simpulse.keplerian_binary_phase_model.a" title="Permalink to this definition">¶</a></dt>
+<dd><p>Semimajor axis</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.keplerian_binary_phase_model.b">
+<code class="descname">b</code><a class="headerlink" href="#simpulse.keplerian_binary_phase_model.b" title="Permalink to this definition">¶</a></dt>
+<dd><p>Semiminor axis</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.keplerian_binary_phase_model.e">
+<code class="descname">e</code><a class="headerlink" href="#simpulse.keplerian_binary_phase_model.e" title="Permalink to this definition">¶</a></dt>
+<dd><p>Eccentricity</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="simpulse.keplerian_binary_phase_model.eval_phi">
 <code class="descname">eval_phi</code><span class="sig-paren">(</span><em>t</em>, <em>nderivs=0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.keplerian_binary_phase_model.eval_phi" title="Permalink to this definition">¶</a></dt>
@@ -285,6 +315,30 @@ The ‘t0’ and ‘t1’ args are the starting/ending times of the sampled regi
 <p>The return value is an array of length ‘nsamples’, whose i-th entry is the phase model Phi(t)
 evaluated at t = ((nsamples-i-1)*t0 + i*t1) / (nsamples-1).</p>
 <p>Can be called with nderivs=0 to get Phi(t), or nderivs &gt; 0 to get derivatives (d/dt)^n Phi.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.keplerian_binary_phase_model.nx">
+<code class="descname">nx</code><a class="headerlink" href="#simpulse.keplerian_binary_phase_model.nx" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-component of unit vector in direction of Earth</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.keplerian_binary_phase_model.ny">
+<code class="descname">ny</code><a class="headerlink" href="#simpulse.keplerian_binary_phase_model.ny" title="Permalink to this definition">¶</a></dt>
+<dd><p>Y-component of unit vector in direction of Earth</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.keplerian_binary_phase_model.phi0">
+<code class="descname">phi0</code><a class="headerlink" href="#simpulse.keplerian_binary_phase_model.phi0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial phase (mod 1)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simpulse.keplerian_binary_phase_model.t0">
+<code class="descname">t0</code><a class="headerlink" href="#simpulse.keplerian_binary_phase_model.t0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time delay parameter between Earth and binary center of mass (mod Porb)</p>
 </dd></dl>
 
 </dd></dl>
