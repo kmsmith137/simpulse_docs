@@ -172,14 +172,14 @@ are coming soon!</p>
 </li>
 <li><p class="first">cmake</p>
 <ul class="simple">
-<li>Linux (Ubuntu): <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">cmake</span></code></li>
-<li>Linux (CentOS): <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">yum</span> <span class="pre">install</span> <span class="pre">cmake</span></code></li>
-<li>OSX: <code class="docutils literal"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">cmake</span></code></li>
+<li>Linux (Ubuntu): <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">cmake</span></code></li>
+<li>Linux (CentOS): <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">yum</span> <span class="pre">install</span> <span class="pre">cmake</span></code></li>
+<li>OSX: <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">cmake</span></code></li>
 </ul>
 </li>
 <li><p class="first"><a class="reference external" href="https://github.com/pybind/pybind11">pybind11</a>, a C++ header-only library for C++/python interoperability.  I think
 the only option here is to build from source.  The following worked for me:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>git clone https://github.com/pybind/pybind11
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/pybind/pybind11
 cd pybind11
 mkdir build
 cd build
@@ -194,14 +194,14 @@ make install
 </li>
 <li><p class="first"><a class="reference external" href="http://www.fftw.org/">FFTW3</a>, a portable high-performance FFT library</p>
 <ul>
-<li><p class="first">Linux (Ubuntu): <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libfftw3-dev</span></code></p>
+<li><p class="first">Linux (Ubuntu): <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libfftw3-dev</span></code></p>
 </li>
-<li><p class="first">Linux (CentOS): <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">fftw-devel</span></code></p>
+<li><p class="first">Linux (CentOS): <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">fftw-devel</span></code></p>
 </li>
-<li><p class="first">OSX: <code class="docutils literal"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">fftw</span></code></p>
+<li><p class="first">OSX: <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">fftw</span></code></p>
 </li>
 <li><p class="first">Building from source.  The following worked for me:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>wget http://www.fftw.org/fftw-3.3.8.tar.gz  # latest version as of June 2018
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>wget http://www.fftw.org/fftw-3.3.8.tar.gz  # latest version as of June 2018
 tar zxvf fftw-3.3.8.tar.gz
 cd fftw-3.3.8
 
@@ -221,7 +221,7 @@ make install
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>Quick-and-dirty instructions:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>git clone https://github.com/kmsmith137/simpulse
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/kmsmith137/simpulse
 cd simpulse
 git checkout cmake_pybind11  # see above!!
 mkdir build
@@ -236,12 +236,12 @@ make install
 <blockquote>
 <div><ul>
 <li><p class="first">This is a standard (I hope!) cmake build.  I recommend the “out-of-source” mode for building packages with
-cmake, where you create a separate <code class="docutils literal"><span class="pre">build</span></code> directory for compiling.</p>
+cmake, where you create a separate <code class="docutils literal notranslate"><span class="pre">build</span></code> directory for compiling.</p>
 </li>
 <li><p class="first">When you run <cite>cmake</cite> in the build directory, it should locate all of the necessary ingredients on your machine
 (fftw3, python, pybind11, etc.) and create a Makefile.</p>
 <p>After that, you shouldn’t need need to run cmake again.  It should suffice to run <cite>make</cite> invocations such as:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build</span>
 <span class="n">make</span> <span class="o">-</span><span class="n">j4</span>       <span class="c1"># build everything (-j4 uses four threads and is optional)</span>
 <span class="n">make</span> <span class="n">install</span>   <span class="c1"># install libraries to $HOME/lib, headers to $HOME/include, etc.</span>
 <span class="n">make</span> <span class="n">check</span>     <span class="c1"># run unit tests</span>
@@ -251,15 +251,15 @@ cmake, where you create a separate <code class="docutils literal"><span class="p
 </div>
 <p>However, note that these <cite>make</cite> invocations <em>will only work in the build directory where you originally ran cmake</em>.</p>
 <p>So, whenever you want to recompile, you’ll need to switch back to the ‘build’ directory.
-Otherwise you will get the error: <code class="docutils literal"><span class="pre">make:</span> <span class="pre">***</span> <span class="pre">No</span> <span class="pre">targets</span> <span class="pre">specified</span> <span class="pre">and</span> <span class="pre">no</span> <span class="pre">makefile</span> <span class="pre">found</span></code></p>
+Otherwise you will get the error: <code class="docutils literal notranslate"><span class="pre">make:</span> <span class="pre">***</span> <span class="pre">No</span> <span class="pre">targets</span> <span class="pre">specified</span> <span class="pre">and</span> <span class="pre">no</span> <span class="pre">makefile</span> <span class="pre">found</span></code></p>
 </li>
-<li><p class="first">I usually run cmake with <code class="docutils literal"><span class="pre">-DCMAKE_INSTALL_PREFIX=$HOME</span></code>.
+<li><p class="first">I usually run cmake with <code class="docutils literal notranslate"><span class="pre">-DCMAKE_INSTALL_PREFIX=$HOME</span></code>.
 Then <cite>make install</cite> will install simpulse libraries in $HOME/lib, headers in $HOME/include, etc.
 This can be changed if you want to install simpulse elsewhere.  By default, cmake installs to /usr/local.</p>
 </li>
-<li><p class="first">Here are some more influential cmake variables, which can be set with <code class="docutils literal"><span class="pre">cmake</span> <span class="pre">-DVAR=VALUE</span></code>.
+<li><p class="first">Here are some more influential cmake variables, which can be set with <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-DVAR=VALUE</span></code>.
 These might be useful if cmake is failing to find an external prerequisite:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>CMAKE_CXX_FLAGS: compiler flags
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>CMAKE_CXX_FLAGS: compiler flags
 CMAKE_MODULE_PATH: look for cmake modules (ending in .cmake) in this directory
 CMAKE_INCLUDE_PATH: look for header files in this directory
 CMAKE_LIBRARY_PATH: look for libraries in this directory
@@ -268,7 +268,7 @@ CMAKE_PREFIX_PATH: look for libraries in ${CMAKE_PREFIX_PATH}/lib,
 </pre></div>
 </div>
 </li>
-<li><p class="first"><code class="docutils literal"><span class="pre">make</span> <span class="pre">VERBOSE=1</span></code> is generally useful for diagnosing build problems.</p>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">VERBOSE=1</span></code> is generally useful for diagnosing build problems.</p>
 </li>
 <li><p class="first">Let me know if you have any trouble with cmake.  I am still getting used to it, so there may
 be bugs in the build scripts, or room for improvement.</p>
@@ -329,7 +329,6 @@ be bugs in the build scripts, or room for improvement.</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

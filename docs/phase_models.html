@@ -170,7 +170,7 @@ and may optionally define eval_phi_sequence().  See <a class="reference internal
 <dt id="simpulse.phase_model_base.eval_phi">
 <code class="descname">eval_phi</code><span class="sig-paren">(</span><em>t</em>, <em>nderivs=0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.phase_model_base.eval_phi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the phase model Phi(t) at a single time ‘t’.</p>
-<p>The <code class="docutils literal"><span class="pre">nderivs</span></code> argument can be used to compute the n-th derivative (d^n phi) / dt^n.
+<p>The <code class="docutils literal notranslate"><span class="pre">nderivs</span></code> argument can be used to compute the n-th derivative (d^n phi) / dt^n.
 Currently we don’t actually use ‘nderivs’ anywhere, and I may remove it from the
 simpulse API eventually!</p>
 </dd></dl>
@@ -193,7 +193,7 @@ evaluated at t = ((nsamples-i-1)*t0 + i*t1) / (nsamples-1).</p>
 <dd><p>This class represents a pulsar whose acceleration (i.e. frequency derivative df/dt)
 is constant in time.  (Subclass of phase_model_base.)</p>
 <p>Constructor syntax:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pm</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">constant_acceleration_phase_model</span><span class="p">(</span><span class="n">phi0</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">fdot</span><span class="p">,</span> <span class="n">t0</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pm</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">constant_acceleration_phase_model</span><span class="p">(</span><span class="n">phi0</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">fdot</span><span class="p">,</span> <span class="n">t0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>where:</p>
@@ -203,11 +203,19 @@ is constant in time.  (Subclass of phase_model_base.)</p>
 <p>fdot = frequency derivative df/dt (note that this is independent of time)</p>
 <p>t0 = a reference time (can be zero, but a nonzero value may be convenient)</p>
 </div></blockquote>
+<p>WARNING: constant_acceleration_phase_models are pickleable, but <em>only</em> if you
+use the cPickle (not pickle) module, and specify pickle protocol version 2, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">constant_acceleration_phase_model</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="c1"># note protocol version 2 here!</span>
+<span class="nb">print</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Variants of this will result in either exceptions or mystery segfaults!!</p>
 <dl class="method">
 <dt id="simpulse.constant_acceleration_phase_model.eval_phi">
 <code class="descname">eval_phi</code><span class="sig-paren">(</span><em>t</em>, <em>nderivs=0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.constant_acceleration_phase_model.eval_phi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the phase model Phi(t) at a single time ‘t’.</p>
-<p>The <code class="docutils literal"><span class="pre">nderivs</span></code> argument can be used to compute the n-th derivative (d^n phi) / dt^n.
+<p>The <code class="docutils literal notranslate"><span class="pre">nderivs</span></code> argument can be used to compute the n-th derivative (d^n phi) / dt^n.
 Currently we don’t actually use ‘nderivs’ anywhere, and I may remove it from the
 simpulse API eventually!</p>
 </dd></dl>
@@ -251,23 +259,30 @@ evaluated at t = ((nsamples-i-1)*t0 + i*t1) / (nsamples-1).</p>
 <dl class="class">
 <dt id="simpulse.keplerian_binary_phase_model">
 <em class="property">class </em><code class="descclassname">simpulse.</code><code class="descname">keplerian_binary_phase_model</code><a class="headerlink" href="#simpulse.keplerian_binary_phase_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class represents a binary pulsar with relativistic effects neglected
+<dd><p>This class represents a binary pulsar with relativistic effects neglected.
 (Subclass of phase_model_base.)</p>
 <p>Constructor syntax:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pm</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">keplerian_binary_phase_model</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">Prob</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">phi0</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pm</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">keplerian_binary_phase_model</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">Porb</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">phi0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>where:</p>
 <blockquote>
 <div><p>e = eccentricity</p>
 <p>a = semimajor axis</p>
-<p>b = semiminor axis (note: e = sqrt(1 - b^2 / a^2) )</p>
 <p>Porb = orbital period</p>
 <p>nx, ny = unit vector in the direction of Earth</p>
 <p>P = pulse period</p>
 <p>t0 = time delay parameter between Earth and binary center of mass (mod Porb)</p>
 <p>phi0 = initial phase (mod 1)</p>
 </div></blockquote>
+<p>WARNING: keplerian_binary_phase_models are pickleable, but <em>only</em> if you
+use the cPickle (not pickle) module, and specify pickle protocol version 2, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">simpulse</span><span class="o">.</span><span class="n">keplerian_binary_phase_model</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="c1"># note protocol version 2 here!</span>
+<span class="nb">print</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Variants of this will result in either exceptions or mystery segfaults!!</p>
 <dl class="attribute">
 <dt id="simpulse.keplerian_binary_phase_model.P">
 <code class="descname">P</code><a class="headerlink" href="#simpulse.keplerian_binary_phase_model.P" title="Permalink to this definition">¶</a></dt>
@@ -302,7 +317,7 @@ evaluated at t = ((nsamples-i-1)*t0 + i*t1) / (nsamples-1).</p>
 <dt id="simpulse.keplerian_binary_phase_model.eval_phi">
 <code class="descname">eval_phi</code><span class="sig-paren">(</span><em>t</em>, <em>nderivs=0</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#simpulse.keplerian_binary_phase_model.eval_phi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the phase model Phi(t) at a single time ‘t’.</p>
-<p>The <code class="docutils literal"><span class="pre">nderivs</span></code> argument can be used to compute the n-th derivative (d^n phi) / dt^n.
+<p>The <code class="docutils literal notranslate"><span class="pre">nderivs</span></code> argument can be used to compute the n-th derivative (d^n phi) / dt^n.
 Currently we don’t actually use ‘nderivs’ anywhere, and I may remove it from the
 simpulse API eventually!</p>
 </dd></dl>
@@ -396,7 +411,6 @@ evaluated at t = ((nsamples-i-1)*t0 + i*t1) / (nsamples-1).</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

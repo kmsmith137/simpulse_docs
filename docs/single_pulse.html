@@ -163,7 +163,7 @@ The cmake_pybind11 simpulse branch will be merged to master soon.</p>
 <em class="property">class </em><code class="descclassname">simpulse.</code><code class="descname">single_pulse</code><a class="headerlink" href="#simpulse.single_pulse" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class represents a single dispersed pulse (i.e. an FRB), with frequency channelization specified at contruction.</p>
 <p>Constructor syntax:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">single_pulse</span><span class="p">(</span><span class="n">nt</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">freq_lo_MHz</span><span class="p">,</span> <span class="n">freq_hi_MHz</span><span class="p">,</span> <span class="n">dm</span><span class="p">,</span> <span class="n">sm</span><span class="p">,</span> <span class="n">intrinsic_width</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">single_pulse</span><span class="p">(</span><span class="n">nt</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">,</span> <span class="n">freq_lo_MHz</span><span class="p">,</span> <span class="n">freq_hi_MHz</span><span class="p">,</span> <span class="n">dm</span><span class="p">,</span> <span class="n">sm</span><span class="p">,</span> <span class="n">intrinsic_width</span><span class="p">,</span>
                  <span class="n">fluence</span><span class="p">,</span> <span class="n">spectral_index</span><span class="p">,</span> <span class="n">undispersed_arrival_time</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -198,7 +198,7 @@ lowest to highest (the default), or ordered from highest to lowest.</p>
 <dd><p>This utility function is intended for use in direct pulse fitters.</p>
 <p>The inputs are a 2-d data array d[ifreq,it] and a 2-d weights array w[ifreq,it].</p>
 <p>The outputs are 1-d arrays wsd[ifreq] and wss[ifreq], computed as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">wsd</span><span class="p">[</span><span class="n">ifreq</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_</span><span class="p">{</span><span class="n">it</span><span class="p">}</span> <span class="n">w</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span><span class="n">it</span><span class="p">]</span> <span class="n">s</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span><span class="n">it</span><span class="p">]</span> <span class="n">d</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span><span class="n">it</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wsd</span><span class="p">[</span><span class="n">ifreq</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_</span><span class="p">{</span><span class="n">it</span><span class="p">}</span> <span class="n">w</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span><span class="n">it</span><span class="p">]</span> <span class="n">s</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span><span class="n">it</span><span class="p">]</span> <span class="n">d</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span><span class="n">it</span><span class="p">]</span>
 <span class="n">wss</span><span class="p">[</span><span class="n">ifreq</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum_</span><span class="p">{</span><span class="n">it</span><span class="p">}</span> <span class="n">w</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span><span class="n">it</span><span class="p">]</span> <span class="n">s</span><span class="p">[</span><span class="n">ifreq</span><span class="p">,</span><span class="n">it</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span>
 </pre></div>
 </div>
@@ -353,7 +353,6 @@ optional parameter, in case exploring the dependence is useful.</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
